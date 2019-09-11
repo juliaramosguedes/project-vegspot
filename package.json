@@ -1,0 +1,44 @@
+{
+  "name": "vegspot",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "cloudinary": "^1.15.0",
+    "connect": "^3.7.0",
+    "connect-mongo": "^3.0.0",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.1.0",
+    "ensure-login": "^0.1.4",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "hbs": "^4.0.4",
+    "mongoose": "^5.7.0",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "multer-storage-cloudinary": "^2.2.1",
+    "node-sass-middleware": "^0.11.0",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juliaramosguedes/project-vegspot.git"
+  },
+  "author": "Julia Ramos & Dan Yamashita",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juliaramosguedes/project-vegspot/issues"
+  },
+  "homepage": "https://github.com/juliaramosguedes/project-vegspot#readme",
+  "description": ""
+}
