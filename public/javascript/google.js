@@ -62,7 +62,7 @@ function addMarker(coords) {
   });
 
   marker.addListener('click', () => {
-    console.log(infoWindow.content)
+    console.log(infoWindow.content);
   });
 
   marker.addListener('mouseout', () => {
@@ -70,39 +70,61 @@ function addMarker(coords) {
   });
 }
 
-function addMarkerPlace(place) {
-  const coords = place.geometry.location;
-  console.log(place.name, place.formatted_address)
-  const contentString = `
-  <div>${place.name}</div>
-  <div>${place.formatted_address}</div>`;
-  const marker = new google.maps.Marker({
-    position: coords,
-    map,
-    icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-  });
-
+function addMarkerPlaces(places) {
+  //deleteMarkers();
   infoWindow = new google.maps.InfoWindow();
-  infoWindow.setContent(contentString);
+  const bounds = new google.maps.LatLngBounds();
+  let contentString = []
+  let marker = []
+  for (let i = 0; i < places.length; i++) {
+    let place = places[i];
+    let coords = place.geometry.location;
+    console.log(place.name, place.formatted_address);
+    contentString[i] = `
+    <div>${place.name}</div>
+    <div>${place.formatted_address}</div>
+    <button class='botao-cadastro'>cadastre</button>
+    `;
+    marker[i] = new google.maps.Marker({
+      position: coords,
+      map,
+      icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+    });
 
-  marker.addListener('mouseover', () => {
-    infoWindow.open(map, marker);
-  });
+    marker[i].addListener('mouseover', () => {
+      infoWindow.setContent(contentString[i]);
+      infoWindow.open(map, marker[i]);
+    });
 
-  marker.addListener('click', () => {
-    console.log(place)
-  });
+    marker[i].addListener('click', () => {
+      console.log(place);
+    });
 
-  marker.addListener('mouseout', () => {
-    infoWindow.close();
-  });
+    marker[i].addListener('mouseout', () => {
+      infoWindow.close();
+    });
+    bounds.extend(places[i].geometry.location);
+  }
+  map.fitBounds(bounds);
+  console.log(marker.length)
+
+  function deleteMarkers(){
+    if(typeof(marker)){
+      console.log('entrei')
+      for(let i = 0; i < marker.length; i++){
+        marker[i] = setMap(null)
+      }
+    }
+  }
 }
+
+
 
 function geocode(location) {
   axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
     params: {
       address: location,
-      key: 'AIzaSyAFJywZr8chFDtxNX5tPazJiwOvUr6pQCQ',
+      key: 'AIzaSyAh1c16Z7LRD7qSFc_m7fY_odVQJXiIlus',
     },
   })
     .then((response) => {
@@ -123,23 +145,21 @@ function geocode(location) {
 
 function findPlaces(text) {
   const request = {
-    // location: '',
-    // radius: '',
+    location: pos,
+    radius: '500',
     query: text,
+    //bounds: 'strictbounds',
+    type: ['restaurant']
   };
+  console.log('request location', request.location)
 
   service = new google.maps.places.PlacesService(map);
   service.textSearch(request, callback);
-  let bounds = new google.maps.LatLngBounds()
 
   function callback(places, status) {
     console.log('places', places);
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      for (let i = 0; i < places.length; i++) {
-        addMarkerPlace(places[i]);
-        bounds.extend(places[i].geometry.location)
-      }
-      map.fitBounds(bounds)
+      addMarkerPlaces(places);
     }
   }
 }
@@ -167,7 +187,7 @@ document.getElementById('button').onclick = function (event) {
   document.getElementById('formatted-address').innerHTML = '';
   const address = document.getElementById('address').value;
   console.log('address', address);
-  findPlaces(address)
+  findPlaces(address);
   geocode(address);
   document.getElementById('address').value = '';
 };
