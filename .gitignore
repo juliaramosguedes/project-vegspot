@@ -10,5 +10,6 @@ npm-debug.log
 # MAC useless file
 .DS_Store
 
-# Design files
+# Other files
 logo
+cloudinary.js

@@ -6,9 +6,9 @@ const reviewSchema = Schema(
   {
     authorId: { type: String, required: true },
     spotId: { type: String, required: true },
-    authorName: { type: String, required: true },
-    authorUrl: { type: String, required: true },
-    authorPhoto: { type: String, default: '' },
+    // authorName: { type: String, required: true },
+    // authorUrl: { type: String, required: true },
+    // authorPhoto: { type: String, default: '' },
     rating: { type: Number, required: true },
     date: { type: String, required: true },
     text: { type: String, required: true },
