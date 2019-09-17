@@ -7,6 +7,11 @@ const userSchema = Schema(
     username: String,
     password: String,
     name: String,
+    category: {
+      type: String,
+      enum: ['Vegan', 'Vegetariano', 'Vegan-Friendly'],
+      required: true,
+    },
     googleID: String,
     email: String,
     imgPath: { type: String, default: '' },
