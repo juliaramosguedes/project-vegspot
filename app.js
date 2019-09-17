@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const favicon = require('serve-favicon');
-//const hbs = require('hbs');
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const path = require('path');
@@ -54,13 +53,13 @@ const index = require('./routes/public/index');
 
 app.use('/', index);
 
-// Protected Routes Middleware
-app.use((req, res, next) => {
-  if (req.session.currentUser) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-});
+// // Protected Routes Middleware
+// app.use((req, res, next) => {
+//   if (req.session.currentUser) {
+//     next();
+//   } else {
+//     res.redirect('/login');
+//   }
+// });
 
 module.exports = app;

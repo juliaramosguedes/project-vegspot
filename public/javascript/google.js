@@ -149,10 +149,9 @@ function findPlaces(text) {
     radius: '500',
     query: text,
     //bounds: 'strictbounds',
-    type: ['restaurant']
+    //type: ['restaurant'],
   };
   console.log('request location', request.location)
-
   service = new google.maps.places.PlacesService(map);
   service.textSearch(request, callback);
 
@@ -163,6 +162,7 @@ function findPlaces(text) {
     }
   }
 }
+
 
 
 function placeDetails(id) {
