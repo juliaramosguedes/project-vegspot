@@ -1,1 +1,70 @@
 <h1>Caiu aqui</h1>
+<h2>ola</h2>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<form>
+  <input type="text" name="address" placeholder="endereço" id='address'>
+
+  <button id = 'button'>submit</button>
+</form>
+<div id='formatted-address'>
+
+</div>
+
+<button></button>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <div id="map"></div>
+
+
+    {{!-- <script>
+
+
+var map;
+function initMap() {
+  
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: -23.5506507, lng: -46.6333824},
+    zoom: 12
+  });
+
+  var uluru = {lat: -23.5506507, lng: -46.6333824};
+  var uluru1 = {lat: -23.5506507, lng: -46.6733824};
+  addMarker(uluru)
+  addMarker(uluru1)
+
+  function addMarker(coords){
+    var marker = new google.maps.Marker({position: coords, 
+    map: map, 
+    icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'});
+
+    var contentString = '<h1>oie</h1>'
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+
+  }
+
+}
+    </script> --}}
+
+<script type="text/javascript" src="/javascript/google.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh1c16Z7LRD7qSFc_m7fY_odVQJXiIlus&libraries=places&callback=initMap" 
+async defer></script>
+
+   
+   
