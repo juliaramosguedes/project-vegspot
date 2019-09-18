@@ -14,7 +14,6 @@ const User = require('./models/User');
 const bcrypt = require('bcrypt');
 
 const app = express();
-
 passport.serializeUser((user, cb) => {
   cb(null, user._id);
 });
@@ -37,7 +36,6 @@ passport.use(new LocalStrategy((username, password, next) => {
     if (!bcrypt.compareSync(password, user.password)) {
       return next(null, false, { message: 'Incorrect password' });
     }
-
     return next(null, user);
   });
 }));
@@ -51,7 +49,7 @@ mongoose
     console.error('Error connecting to mongo', err);
   });
 
-  // Middleware Setup
+// Middleware Setup
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -63,45 +61,39 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// app.use(session({
-//   secret: 'basic-auth-secret',
-//   cookie: { maxAge: 60000000 },
-//   store: new MongoStore({
-//     mongooseConnection: mongoose.connection,
-//     ttl: 24 * 60 * 60, // 1 day
-//   }),
-// }));
-
+app.use(session({
+  secret: 'basic-auth-secret',
+  cookie: { maxAge: 60000000 },
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    ttl: 24 * 60 * 60, // 1 day
+  }),
+}));
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
   sourceMap: true,
 }));
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
-
-const index = require('./routes/public/index');
+// Middleware to check login
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
 
 // Routes
-app.use('/', index);
-
+const index = require('./routes/public/index');
 const authRoutes = require('./routes/public/auth-routes');
+// const spotRoutes = require('./routes/private/spot-routes');
+// const userRoutes = require('./routes/private/user-routes');
+
+app.use('/', index);
 app.use('/', authRoutes);
-
-const spots = require('./routes/private/spots-routes');
-
-// // Protected Routes Middleware
-// app.use((req, res, next) => {
-//   if (req.session.currentUser) {
-//     next();
-//   } else {
-//     res.redirect('/login');
-//   }
-// });
+// app.use('/spot', spotRoutes);
+// app.use('/user', userRoutes);
 
 module.exports = app;
