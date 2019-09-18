@@ -24,10 +24,10 @@
       <a class="brand text-white" href="/"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482714/project-vegspot/logo.png" alt="VegSpot logo" height="45"> VegSpot</a>
     </div>
       <div class="col-5 col-md-3 order-1 order-md-2 login">
-    {{#if isUserLoggedIn}}
-        <a href="/logout" class="text-white">Sair</a>
+    {{#if user}}
+        <a href="/auth/logout" class="text-white">Sair</a>
         {{ else }}
-        <a href="/login" class="text-white">Entrar</a>
+        <a href="/auth/login" class="text-white">Entrar</a>
     {{/if}}
       </div>
 
