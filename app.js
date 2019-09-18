@@ -56,20 +56,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret: 'our-passport-local-strategy-app',
-  resave: true,
-  saveUninitialized: true,
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(session({
   secret: 'basic-auth-secret',
   cookie: { maxAge: 60000000 },
+  saveUninitialized: true,
+  resave: false,
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
     ttl: 24 * 60 * 60, // 1 day
   }),
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
