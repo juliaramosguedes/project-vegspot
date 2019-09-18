@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
@@ -88,12 +89,12 @@ app.use((req, res, next) => {
 // Routes
 const index = require('./routes/public/index');
 const authRoutes = require('./routes/public/auth-routes');
-// const spotRoutes = require('./routes/private/spot-routes');
-// const userRoutes = require('./routes/private/user-routes');
+const spotRoutes = require('./routes/private/spot-routes');
+const userRoutes = require('./routes/private/user-routes');
 
 app.use('/', index);
-app.use('/', authRoutes);
-// app.use('/spot', spotRoutes);
-// app.use('/user', userRoutes);
+app.use('/auth', authRoutes);
+app.use('/spot', spotRoutes);
+app.use('/user', userRoutes);
 
 module.exports = app;
