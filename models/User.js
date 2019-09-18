@@ -20,6 +20,11 @@ const userSchema = Schema(
       enum: ['user', 'achiever', 'admin', 'owner'],
       default: 'user',
     },
+    status: {
+      type: String,
+      enum: ['ativo', 'inativo'],
+      default: 'ativo',
+    },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

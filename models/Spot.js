@@ -29,6 +29,11 @@ const spotSchema = Schema(
     photos: Array,
     googleReviews: Array,
     price: Number,
+    status: {
+      type: String,
+      enum: ['ativo', 'inativo'],
+      default: 'ativo',
+    },
   },
 );
 

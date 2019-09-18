@@ -1,17 +1,35 @@
+/* colors
+https://colorhunt.co/palette/116554
+*/
+
 body {
   margin: 0;
   padding: 0;
 }
 
-#logo {
-  width: 45px;
-}
-
-.icon {
-  width: 30px;
-  text-align: center;
-} 
-
 .login {
   text-align: end;
+  font-size: 1.7em;
+  padding-bottom: 10px;
+}
+
+.dark-blue {
+  background: #163a5f;
+}
+
+.light-blue {
+  background: #21aba5;
+}
+
+.blue {
+  background: #1d566e;
+}
+
+.light-green {
+  background: #45eba5;
+}
+
+.brand {
+  font-size: 1.5em;
+  font-family: 'Gayathri', sans-serif;
 }
