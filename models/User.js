@@ -4,21 +4,21 @@ const { Schema } = mongoose;
 
 const userSchema = Schema(
   {
-    username: String,
-    password: String,
-    name: String,
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    name: { type: String, required: true },
     category: {
       type: String,
       enum: ['Vegan', 'Vegetariano', 'Vegan-Friendly'],
       required: true,
     },
     googleID: String,
-    email: String,
+    email: { type: String, required: true },
     imgPath: { type: String, default: '' },
     role: {
       type: String,
       enum: ['user', 'achiever', 'admin', 'owner'],
-      default: 'User',
+      default: 'user',
     },
   },
   {

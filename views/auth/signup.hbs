@@ -1,0 +1,34 @@
+<h2>Cadastre-se</h2>
+
+<form action="/signup" method="POST" id="form-container">
+  <label for="username">Nome de usuário</label>
+  <input id="username" type="text" name="username">
+  <br>
+  <label for="password">Senha</label>
+  <input id="password" type="password" name="password">
+    <br>
+  <label for="name">Nome completo</label>
+  <input id="name" type="text" name="name">
+    <br>
+  <label for="email">E-mail</label>
+  <input id="email" type="email" name="email">
+    <br>
+  <label for="category">Categoria</label>
+  <select name="category" id="category">
+    <option value="Vegan" selected>Vegan</option>
+    <option value="Vegetariano">Vegetariano</option>
+    <option value="Vegan-Friendly">Vegan-Friendly</option>
+  </select>
+
+  {{#if message}}
+    <div class="error-message">{{ message }}</div>
+  {{/if}}
+  <br><br>
+
+  <button>Criar conta</button>
+
+  <p class="account-message">
+    Já tem um cadastro?
+    <a href="/login">Login</a>
+  </p>
+</form>
