@@ -1,4 +1,4 @@
-<form action="/login" method="POST">
+<form action="/auth/login" method="POST">
   <div>
     <label for="username">Nome de usuário</label>
     <input type="text" name="username">
@@ -10,4 +10,8 @@
   <div>
     <input type="submit" value="Login">
   </div>
+    <p class="account-message">
+    Não tem um cadastro?
+    <a href="/auth/signup">Cadastre-se</a>
+  </p>
 </form>
