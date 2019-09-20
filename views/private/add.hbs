@@ -1,0 +1,41 @@
+<section class="container d-flex flex-column justify-content-center align-items-center" id="signup">
+  <h1>Cadastro de locais</h1>
+  <br>
+  <form action="/auth/signup" method="POST" id="form-container">
+    <label for="name">Nome do local</label><br>
+    <input id="name" type="text" name="name" class="form-control-lg">
+    <br><br>
+    <label for="telefone">Telefone</label><br>
+    <input id="telefone" type="text" name="phone" class="form-control-lg">
+      <br><br>
+    <label for="Endereço">Endereço</label><br>
+    <input id="Endereço" type="text" name="address" class="form-control-lg">
+      <br><br>
+    <label for="vegCategory">Categoria</label><br>
+    <select name="vegCategory" id="vegCategory" class="form-control-lg">
+      <option value="Vegan" selected>Vegan</option>
+      <option value="Vegetariano">Vegetariano</option>
+      <option value="Vegan-Friendly">Vegan-Friendly</option>
+    </select>
+    <br><br>
+    <label for="spotCategory">Tipo de local</label><br>
+    <select name="spotCategory" id="spotCategory" class="form-control-lg">
+      <option value="Restaurante" selected>Restaurante</option>
+      <option value="Loja">Loja</option>
+    </select>
+    <br><br>
+    <label for="weekday">Horário de funcionamento</label><br>
+    <textarea name="weekday" id="weekday" class="form-control-lg" cols="30" rows="10"></textarea>
+      <br><br>
+    <label for="price">Preço</label><br>
+    <input id="price" type="number" name="price" class="form-control-lg">
+      <br><br>
+
+    <br>
+    {{#if message}}
+      <div class="error-message">{{ message }}</div>
+    {{/if}}
+    <br>
+    <button type="submit" class="btn btn-primary">Cadastrar local</button>
+  </form>
+</section>

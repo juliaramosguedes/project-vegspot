@@ -17,8 +17,6 @@ const spots = [
     },
     vegCategory: 'Vegan',
     spotCategory: 'Restaurante',
-    email: 'julia@govegan.com',
-    role: 'achiever',
     rating: 4.5,
     googlePlaceId: '',
     weekday: '',
