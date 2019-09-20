@@ -31,10 +31,10 @@
     {{/if}}
       </div>
 
-    <form class="form-inline col-12 col-md-6 d-flex justify-content-center order-2 order-md-1" action="/search" method="POST">
+    <form class="form-inline col-12 col-md-6 d-flex justify-content-center order-2 order-md-1" action="/spot/search" method="POST">
       <label class="sr-only" for="Search spots">Search Spots</label>
       <div class="input-group">
-        <input type="text" class="form-control form-control-lg" placeholder="Encontre um lugar" aria-label="Search for a spot" aria-describedby="search-spot">
+        <input type="text" name="searchSpot" class="form-control form-control-lg" placeholder="Encontre um lugar" aria-label="Search for a spot" aria-describedby="search-spot">
         <div class="input-group-append">
           <button class="btn btn-outline-success light-green" type="submit"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482761/project-vegspot/search.png" alt="Search Icon" height="30"></button>
         </div>
