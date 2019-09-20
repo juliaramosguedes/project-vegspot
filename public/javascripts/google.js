@@ -1,5 +1,4 @@
-let map; let infoWindow; let
-  pos;
+let map; let infoWindow; let pos;
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition((position) => {

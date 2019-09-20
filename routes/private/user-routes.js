@@ -65,4 +65,4 @@ router.post('/edit-password/:id', ensureLogin.ensureLoggedIn(), async (req, res)
   }
 });
 
-module.exports = router
+module.exports = router;
