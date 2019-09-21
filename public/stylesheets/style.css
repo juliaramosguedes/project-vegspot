@@ -2,9 +2,15 @@
 https://colorhunt.co/palette/116554
 */
 
-body {
+html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+
+#map {
+  height: 50%;
+  width: 50%;
 }
 
 .login {
