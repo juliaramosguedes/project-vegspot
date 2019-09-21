@@ -21,24 +21,22 @@ router.post('/search', async (req, res) => {
 });
 
 router.get('/add', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-  res.render('private/add');
+  res.render('private/spot-add');
 });
 
 router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
   const { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price } = req.body;
-  console.log(req.body);
   const authorId = req.user.id;
-  console.log(authorId);
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
-    res.render("private/add", { message: "Preencha todos os campos." });
+    res.render("private/spot-add", { message: "Preencha todos os campos." });
     return;
   }
   
   Spot.findOne({ name })
   .then(user => {
     if (user) {
-      res.render("private/add", { message: "O nome desse local já está cadastrado." });
+      res.render("private/spot-add", { message: "O nome desse local já está cadastrado." });
       return;
     }
     
@@ -46,7 +44,7 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     newSpot.save((err) => {
       if (err) {
         console.log(err);
-        res.render("private/add", { message: "Algo deu errado." });
+        res.render("private/spot-add", { message: "Algo deu errado." });
       } else {
         res.redirect("/");
       }
@@ -66,6 +64,34 @@ router.get('/profile/:id', async (req, res, next) => {
     } else {
       res.render('public/spot-profile', spot);
     }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get('/edit/:id', checkAchiever, async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const spot = await Spot.findById(id);
+    res.render('private/spot-edit', spot);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post('/edit/:id', checkAchiever, async (req, res, next) => {
+  const { id } = req.params;
+  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price } = req.body;
+  const authorId = req.user.id;
+
+  if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
+    res.render("private/spot-edit", { message: "Preencha todos os campos." });
+    return;
+  }
+
+  try {
+    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price });
+    res.redirect('/');
   } catch (error) {
     console.log(error);
   }
