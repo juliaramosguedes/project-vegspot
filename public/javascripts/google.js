@@ -48,7 +48,7 @@ function addMarker(coords) {
   const marker = new google.maps.Marker({
     position: coords,
     map,
-    icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+    icon: 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
   });
 
   const contentString = '<h1>holy</h1>';
@@ -87,7 +87,7 @@ function addMarkerPlaces(places) {
     marker[i] = new google.maps.Marker({
       position: coords,
       map,
-      icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+      icon: 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
     });
 
     marker[i].addListener('mouseover', () => {
@@ -123,7 +123,7 @@ function geocode(location) {
   axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
     params: {
       address: location,
-      key: 'AIzaSyAh1c16Z7LRD7qSFc_m7fY_odVQJXiIlus',
+      key: 'AIzaSyBMHh2PAjIzu_M-qkzRXzMGqMzjMxLAuMY',
     },
   })
     .then((response) => {

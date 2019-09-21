@@ -68,7 +68,9 @@
     <label for="description">Descrição</label><br>
     <textarea name="description" id="description" cols="50" rows="5">{{description}}</textarea>
       <br><br>
-    <br>
+    <label for="Foto">Url da foto</label><br>
+    <input id="Foto" type="text" name="photos" class="form-control-lg" value="{{photos}}">
+      <br><br>
     {{#if message}}
       <div class="error-message">{{ message }}</div>
     {{/if}}
