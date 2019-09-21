@@ -7,10 +7,10 @@ mongoose.connect(process.env.MONGODB_URI);
 
 const spots = [
   {
-    authorId: '1', 
-    name: 'Julia',
+    authorId: '1',
+    name: 'Teste',
     phone: '',
-    address: '',
+    address: 'alameda jau, 1301',
     coord: {
       lat: '',
       lng: '',
@@ -19,7 +19,7 @@ const spots = [
     spotCategory: 'Restaurante',
     rating: 4.5,
     googlePlaceId: '',
-    weekday: '',
+    weekday: 'segunda a sabado, 08:00 as 22:00',
     photos: [],
     googleReviews: [],
     price: 3,

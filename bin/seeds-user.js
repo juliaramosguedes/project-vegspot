@@ -1,11 +1,11 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const User = require('../models/User');
 
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
 const hash = bcrypt.hashSync(process.env.ADM_PASSWORD, salt);
-const User = require('../models/User');
 
 mongoose.connect(process.env.MONGODB_URI);
 
