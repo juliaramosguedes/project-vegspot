@@ -81,7 +81,7 @@ router.get('/edit/:id', checkAchiever, async (req, res, next) => {
 
 router.post('/edit/:id', checkAchiever, async (req, res, next) => {
   const { id } = req.params;
-  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price } = req.body;
+  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos } = req.body;
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
@@ -90,7 +90,7 @@ router.post('/edit/:id', checkAchiever, async (req, res, next) => {
   }
 
   try {
-    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price });
+    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos });
     res.redirect('/');
   } catch (error) {
     console.log(error);
