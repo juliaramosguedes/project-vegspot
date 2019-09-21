@@ -8,6 +8,7 @@ const spotSchema = Schema(
     name: { type: String, required: true },
     phone: String,
     address: { type: String, required: true },
+    description: { type: String, required: true },
     coord: {
       lat: String,
       lng: String,
