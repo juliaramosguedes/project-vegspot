@@ -13,7 +13,6 @@ router.post('/search', async (req, res) => {
   const { searchSpot } = req.body;
   try {
     const spots = await Spot.find({ name: { "$regex": searchSpot, "$options": "i" } });
-    console.log(spots);
     res.render('public/search', { spots });
   } catch (error) {
     console.log(error);

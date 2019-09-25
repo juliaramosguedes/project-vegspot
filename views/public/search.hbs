@@ -1,14 +1,14 @@
 <h3>Encontramos {{spots.length}} lugares</h3>
 <br>
-<div class="d-flex flex-wrap">
-  <div class="order-1 order-md-0 spots-cards col-12 col-md-6 d-flex flex-wrap">
+<div class="d-flex flex-wrap justify-content-around">
+  <div class="order-1 order-md-0 spots-cards col-10 col-md-5 d-flex flex-wrap">
     {{#each spots}}
     <div class="spot col-12 col-md-6">
-      {{> cardPartial this}}
+      {{> spotPartial this}}
     </div>
     {{/each}}
   </div>
-  <div id="map" class="order-0 order-md-1 col-12 col-md-6"></div>
+  <div id="map" class="order-0 order-md-1 col-10 col-md-5"></div>
 </div>
 <div class="blue add-spot">
   <h3 class="text-white">Não encontrou o lugar procurado?<br>
