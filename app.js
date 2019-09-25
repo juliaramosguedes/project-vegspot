@@ -13,6 +13,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/User');
 const bcrypt = require('bcrypt');
+const hbs = require('hbs');
 
 const app = express();
 passport.serializeUser((user, cb) => {
@@ -82,6 +83,8 @@ app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
+
+hbs.registerPartials(path.join(__dirname, '/views/partials'));
 
 // Routes
 const index = require('./routes/public/index');
