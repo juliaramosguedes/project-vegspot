@@ -1,24 +1,4 @@
-<<<<<<< HEAD
-// let map;
-// let infoWindow;
 let pos;
-=======
-let map; let infoWindow; let pos;
-
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition((position) => {
-    pos = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    };
-  }, () => {
-    handleLocationError(true, infoWindow, map.getCenter());
-  });
-} else {
-  // Browser doesn't support Geolocation
-  handleLocationError(false, infoWindow, map.getCenter());
-}
->>>>>>> 3ae66a0bb63ea85b350e6a32b0eaeadfff0a7fed
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -53,11 +33,7 @@ function addSingleMarker(coords) {
   const marker = new google.maps.Marker({
     position: coords,
     map,
-<<<<<<< HEAD
     icon,
-=======
-    icon: 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
->>>>>>> 3ae66a0bb63ea85b350e6a32b0eaeadfff0a7fed
   });
 
   const contentString = `
@@ -94,10 +70,7 @@ function addSingleMarker(coords) {
   let marker = [];
   for (let i = 0; i < places.length; i++) {
     let place = spot[i];
-    const title = spot.children[1].children[0].innerText;
-    const vegCategory = spot.children[1].children[1].innerText;
-    const address = spot.children[1].children[2].innerText;
-    const coords = spot.children[1].children[4].innerText;
+
     contentString[i] = `
     <div class = 'marker-title'>${title}</div>
     <div class = 'marker-category'>${vegCategory}</div>
@@ -144,12 +117,8 @@ function addMarkerPlaces(places) {
     marker[i] = new google.maps.Marker({
       position: coords,
       map,
-<<<<<<< HEAD
       icon:
         'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
-=======
-      icon: 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
->>>>>>> 3ae66a0bb63ea85b350e6a32b0eaeadfff0a7fed
     });
 
     marker[i].addListener('mouseover', () => {
@@ -191,7 +160,6 @@ async function geocode(location) {
   }
 }
 
-<<<<<<< HEAD
 async function findPlaces(text) {
   try {
     const request = {
@@ -213,30 +181,6 @@ async function findPlaces(text) {
       } catch (error) {
         console.log(error);
       }
-=======
-
-
-function geocode(location) {
-  axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-    params: {
-      address: location,
-      key: 'AIzaSyBMHh2PAjIzu_M-qkzRXzMGqMzjMxLAuMY',
-    },
-  })
-    .then((response) => {
-      console.log('response', response);
-
-      const coord = response.data.results[0].geometry.location;
-      const formattedAddress = response.data.results[0].formatted_address;
-      const placeId = response.data.results[0].place_id;
-      document.getElementById('formatted-address').innerHTML += `${formattedAddress}`;
-      addMarker(coord);
-      console.log('geocode', coord, formattedAddress, placeId);
-      placeDetails(placeId);
-    })
-    .catch((error) => {
-      console.log(error);
->>>>>>> 3ae66a0bb63ea85b350e6a32b0eaeadfff0a7fed
     });
   } catch (error) {
     console.log(error);
