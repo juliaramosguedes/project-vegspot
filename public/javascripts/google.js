@@ -160,30 +160,23 @@ async function geocode(location) {
   }
 }
 
+let myPlaces;
+
 async function findPlaces(text) {
-  try {
-    const request = {
-      location: pos,
-      radius: '500',
-      query: text,
-      // bounds: 'strictbounds',
-      // type: ['restaurant'],
-    };
-    const service = new google.maps.places.PlacesService(map);
-    console.log('mapservice');
-    await service.textSearch(request, async (places, status) => {
-      try {
-        console.log('find places', places);
-        return await places;
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-          return await places;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  } catch (error) {
-    console.log(error);
+  const request = {
+    location: pos,
+    radius: '500',
+    query: text,
+    // bounds: 'strictbounds',
+    // type: ['restaurant'],
+  };
+  const service = new google.maps.places.PlacesService(map);
+  await service.textSearch(request, (places, status) => {
+    myPlaces = places;
+    console.log('DENTRO DA CALLBACK DO TEXT SEARCH');
+  });
+  if (myPlaces) {
+    return myPlaces;
   }
 }
 

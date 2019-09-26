@@ -30,7 +30,7 @@ window.onload = () => {
       
       //addMarkerPlaces(places);
       const placesResult = await findPlaces(address)
-      await console.log('placesResult', placesResult)
+      console.log('placesResult', placesResult)
       document.getElementById('addLocalSearch').value = '';
     } catch (error) {
       console.log(error);
