@@ -8,6 +8,7 @@ const spotSchema = Schema(
     name: { type: String, required: true },
     phone: String,
     address: { type: String, required: true },
+    description: { type: String, required: true },
     coord: {
       lat: String,
       lng: String,
@@ -29,6 +30,11 @@ const spotSchema = Schema(
     photos: Array,
     googleReviews: Array,
     price: Number,
+    status: {
+      type: String,
+      enum: ['ativo', 'inativo'],
+      default: 'ativo',
+    },
   },
 );
 

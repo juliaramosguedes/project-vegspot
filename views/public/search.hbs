@@ -1,0 +1,18 @@
+<h1>search view</h1>
+
+{{#each spots}}
+  <h1><a href="/spot/profile/{{_id}}">{{name}}</a></h1>
+{{/each}}
+
+<form>
+  <input type="text" name="address" placeholder="endereço" id='address'>
+
+  <button id = 'button'>submit</button>
+</form>
+<div id='formatted-address'>
+
+</div>
+
+<button></button>
+
+<div id="map"></div>

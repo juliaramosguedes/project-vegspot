@@ -1,58 +1,53 @@
-let map; let infoWindow; let
-  pos;
-
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition((position) => {
-    pos = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    };
-  }, () => {
-    handleLocationError(true, infoWindow, map.getCenter());
-  });
-} else {
-  // Browser doesn't support Geolocation
-  handleLocationError(false, infoWindow, map.getCenter());
-}
+// let map;
+// let infoWindow;
+let pos;
 
 function initMap() {
-  if (!pos) {
-    pos = { lat: -23.5506507, lng: -46.6333824 };
-  }
-
   map = new google.maps.Map(document.getElementById('map'), {
-    // center: { lat: -23.5506507, lng: -46.6333824 },
-    center: pos,
-    zoom: 17,
+    center: { lat: -34.397, lng: 150.644 },
+    zoom: 15,
   });
-
   infoWindow = new google.maps.InfoWindow();
-  infoWindow.setPosition(pos);
-  infoWindow.setContent('Voce esta aqui.');
-  infoWindow.open(map);
-  map.setCenter(pos);
-  addMarker(pos);
 
-  input = document.getElementById('address');
-  const autocomplete = new google.maps.places.Autocomplete(input);
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+
+      infoWindow.setPosition(pos);
+      infoWindow.setContent('Location found.');
+      infoWindow.open(map);
+      map.setCenter(pos);
+    }, () => {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation
-    ? 'Error: The Geolocation service failed.'
-    : 'Error: Your browser doesn\'t support geolocation.');
-  infoWindow.open(map);
-}
-
-function addMarker(coords) {
+function addSingleMarker(coords) {
+  icon = 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png';
   const marker = new google.maps.Marker({
     position: coords,
     map,
-    icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+    icon,
   });
 
-  const contentString = '<h1>holy</h1>';
+  const contentString = `
+  <h2>X marks the spot</h2>
+
+  `;
+
+  /* const contentString = `
+  <h2>${name}</h2>
+  <h2>${address}</h2>
+  <h2>${rating}</h2>
+  `; */
   const infowindow = new google.maps.InfoWindow({
     content: contentString,
   });
@@ -70,25 +65,27 @@ function addMarker(coords) {
   });
 }
 
-function addMarkerPlaces(places) {
-  //deleteMarkers();
+ function addMarker(spot) {
   infoWindow = new google.maps.InfoWindow();
   const bounds = new google.maps.LatLngBounds();
-  let contentString = []
-  let marker = []
+  let contentString = [];
+  let marker = [];
   for (let i = 0; i < places.length; i++) {
-    let place = places[i];
-    let coords = place.geometry.location;
-    console.log(place.name, place.formatted_address);
+    let place = spot[i];
+    const title = spot.children[1].children[0].innerText;
+    const vegCategory = spot.children[1].children[1].innerText;
+    const address = spot.children[1].children[2].innerText;
+    const coords = spot.children[1].children[4].innerText;
     contentString[i] = `
-    <div>${place.name}</div>
-    <div>${place.formatted_address}</div>
-    <button class='botao-cadastro'>cadastre</button>
+    <div class = 'marker-title'>${title}</div>
+    <div class = 'marker-category'>${vegCategory}</div>
+    <div class = 'marker-address'>${address}</div>
     `;
     marker[i] = new google.maps.Marker({
       position: coords,
       map,
-      icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+      icon:
+        'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png'
     });
 
     marker[i].addListener('mouseover', () => {
@@ -106,64 +103,114 @@ function addMarkerPlaces(places) {
     bounds.extend(places[i].geometry.location);
   }
   map.fitBounds(bounds);
-  console.log(marker.length)
+} 
 
-  function deleteMarkers(){
-    if(typeof(marker)){
-      console.log('entrei')
-      for(let i = 0; i < marker.length; i++){
-        marker[i] = setMap(null)
-      }
-    }
+function addMarkerPlaces(places) {
+  const infoWindow = new google.maps.InfoWindow();
+  const bounds = new google.maps.LatLngBounds();
+  const contentString = [];
+  const marker = [];
+  for (let i = 0; i < places.length; i++) {
+    const place = places[i];
+    const coords = place.geometry.location;
+    console.log(place.name, place.formatted_address);
+    contentString[i] = `
+    <div>${place.name}</div>
+    <div>${place.formatted_address}</div>
+    <button class='botao-cadastro'>cadastre</button>
+    `;
+    marker[i] = new google.maps.Marker({
+      position: coords,
+      map,
+      icon:
+        'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
+    });
+
+    marker[i].addListener('mouseover', () => {
+      infoWindow.setContent(contentString[i]);
+      infoWindow.open(map, marker[i]);
+    });
+
+    marker[i].addListener('click', () => {
+      console.log(place);
+    });
+
+    marker[i].addListener('mouseout', () => {
+      infoWindow.close();
+    });
+    bounds.extend(places[i].geometry.location);
+  }
+  map.fitBounds(bounds);
+}
+
+// function deleteMarkers() {
+//   if (typeof marker) {
+//     console.log('entrei');
+//     for (let i = 0; i < marker.length; i++) {
+//       marker[i] = setMap(null);
+//     }
+//   }
+// }
+async function geocode(location) {
+  try {
+    return await axios
+      .get('https://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+          address: location,
+          key: 'AIzaSyCmsgN1sAoxmCU5VgToMMNPMrWooHKqNJo',
+        },
+      });
+  } catch (error) {
+    console.log(error);
   }
 }
 
-
-
-function geocode(location) {
-  axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-    params: {
-      address: location,
-      key: 'AIzaSyAh1c16Z7LRD7qSFc_m7fY_odVQJXiIlus',
-    },
-  })
-    .then((response) => {
-      console.log('response', response);
-
-      const coord = response.data.results[0].geometry.location;
-      const formattedAddress = response.data.results[0].formatted_address;
-      const placeId = response.data.results[0].place_id;
-      document.getElementById('formatted-address').innerHTML += `${formattedAddress}`;
-      addMarker(coord);
-      console.log('geocode', coord, formattedAddress, placeId);
-      placeDetails(placeId);
-    })
-    .catch((error) => {
-      console.log(error);
+async function findPlaces(text) {
+  try {
+    const request = {
+      location: pos,
+      radius: '500',
+      query: text,
+      // bounds: 'strictbounds',
+      // type: ['restaurant'],
+    };
+    const service = new google.maps.places.PlacesService(map);
+    console.log('mapservice')
+    await service.textSearch(request, async (places, status) => {
+      try {
+        console.log('find places', places);
+        return await places;
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+          return await places;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function findPlaces(text) {
+/* async function findPlaces(text) {
   const request = {
     location: pos,
     radius: '500',
     query: text,
-    //bounds: 'strictbounds',
-    //type: ['restaurant'],
+    // bounds: 'strictbounds',
+    // type: ['restaurant'],
   };
-  console.log('request location', request.location)
+  console.log('request location', request.location);
   service = new google.maps.places.PlacesService(map);
   service.textSearch(request, callback);
 
   function callback(places, status) {
-    console.log('places', places);
+    console.log('find places', places);
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       addMarkerPlaces(places);
     }
   }
-}
-
-
+} */
 
 function placeDetails(id) {
   const request = {
@@ -176,18 +223,19 @@ function placeDetails(id) {
 
   function callback(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      console.log(place);
+      console.log('place details', place);
     }
   }
 }
 
-
-document.getElementById('button').onclick = function (event) {
-  event.preventDefault();
-  document.getElementById('formatted-address').innerHTML = '';
-  const address = document.getElementById('address').value;
-  console.log('address', address);
-  findPlaces(address);
-  geocode(address);
-  document.getElementById('address').value = '';
-};
+// document.getElementById('button').onclick = function(event) {
+//   event.preventDefault();
+//   document.getElementById('formatted-address').innerHTML = '';
+//   const address = document.getElementById('address').value;
+//   console.log('address', address);
+//   findPlaces(address);
+//   geocode(address);
+//   document.getElementById('address').value = '';
+//   const input = document.getElementById('address');
+//   const autocomplete = new google.maps.places.Autocomplete(input);
+// };

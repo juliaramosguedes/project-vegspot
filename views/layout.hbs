@@ -14,31 +14,43 @@
 
   <!-- Axios Javascript -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- Brand font -->
+  <link href="https://fonts.googleapis.com/css?family=Gayathri&display=swap" rel="stylesheet">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between row">
-    <a class="navbar-brand col-2" href="/"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482714/project-vegspot/logo.png" alt="VegSpot logo" id="logo"> VegSpot</a>
-    <form class="form-inline col-8 row" action="/search" method="POST">
+  <nav class="navbar navbar-expand-md navbar-dark dark-blue d-flex justify-content-between align-content-center flex-md-nowrap">
+    <div class="navbar-brand col-5 col-md-3 order-0">
+      <a class="brand text-white" href="/"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482714/project-vegspot/logo.png" alt="VegSpot logo" height="45"> VegSpot</a>
+    </div>
+      <div class="col-5 col-md-3 order-1 order-md-2 login">
+    {{#if user}}
+        <a href="/auth/logout" class="text-white">Sair</a>
+        {{ else }}
+        <a href="/auth/login" class="text-white">Entrar</a>
+    {{/if}}
+      </div>
+
+    <form class="form-inline col-12 col-md-6 d-flex justify-content-center order-2 order-md-1" action="/spot/search" method="POST">
       <label class="sr-only" for="Search spots">Search Spots</label>
-      <div class="input-group col-12">
-        <input type="text" class="form-control form-control-lg" placeholder="Encontre um lugar" aria-label="Search for a spot" aria-describedby="search-spot">
+      <div class="input-group">
+        <input type="text" name="searchSpot" class="form-control form-control-lg" placeholder="Encontre um lugar" aria-label="Search for a spot" aria-describedby="search-spot">
         <div class="input-group-append">
-          <button class="btn btn-outline-success" type="submit"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482761/project-vegspot/search.png" alt="Search Icon" class="icon"></button>
+          <button class="btn btn-outline-success light-green" type="submit"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482761/project-vegspot/search.png" alt="Search Icon" height="30"></button>
         </div>
       </div>
     </form>
-    <a href="/login" class="col-2 login">Login</a>
   </nav>
 
   {{{body}}}
 
-  <!-- VegSpot JavaScript -->
-  <script src="/javascripts/script.js"></script>
-
   <!-- Google JavaScript -->
   <script src="/javascripts/google.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh1c16Z7LRD7qSFc_m7fY_odVQJXiIlus&libraries=places&callback=initMap" 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmsgN1sAoxmCU5VgToMMNPMrWooHKqNJo&libraries=places&callback=initMap" 
 async defer></script>
+
+  <!-- VegSpot JavaScript -->
+  <script src="/javascripts/script.js"></script>
 
   <!-- Bootstrap JavaScripts -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
