@@ -63,24 +63,24 @@ function addSingleMarker(coords) {
   });
 }
 
- function addMarker(spot) {
+function addMarker(places) {
   infoWindow = new google.maps.InfoWindow();
   const bounds = new google.maps.LatLngBounds();
-  let contentString = [];
-  let marker = [];
+  const contentString = [];
+  const marker = [];
   for (let i = 0; i < places.length; i++) {
-    let place = spot[i];
+    const place = places[i];
 
     contentString[i] = `
-    <div class = 'marker-title'>${title}</div>
-    <div class = 'marker-category'>${vegCategory}</div>
-    <div class = 'marker-address'>${address}</div>
+    <div class = 'marker-title'>${place.title}</div>
+    <div class = 'marker-category'>${place.vegCategory}</div>
+    <div class = 'marker-address'>${place.address}</div>
     `;
     marker[i] = new google.maps.Marker({
-      position: coords,
+      position: place.coord,
       map,
       icon:
-        'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png'
+        'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
     });
 
     marker[i].addListener('mouseover', () => {
@@ -95,10 +95,10 @@ function addSingleMarker(coords) {
     marker[i].addListener('mouseout', () => {
       infoWindow.close();
     });
-    bounds.extend(places[i].geometry.location);
+    bounds.extend(places[i].coord);
   }
   map.fitBounds(bounds);
-} 
+}
 
 function addMarkerPlaces(places) {
   const infoWindow = new google.maps.InfoWindow();
@@ -170,12 +170,12 @@ async function findPlaces(text) {
       // type: ['restaurant'],
     };
     const service = new google.maps.places.PlacesService(map);
-    console.log('mapservice')
+    console.log('mapservice');
     await service.textSearch(request, async (places, status) => {
       try {
         console.log('find places', places);
         return await places;
-                if (status == google.maps.places.PlacesServiceStatus.OK) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
           return await places;
         }
       } catch (error) {
@@ -222,15 +222,3 @@ function placeDetails(id) {
     }
   }
 }
-
-// document.getElementById('button').onclick = function(event) {
-//   event.preventDefault();
-//   document.getElementById('formatted-address').innerHTML = '';
-//   const address = document.getElementById('address').value;
-//   console.log('address', address);
-//   findPlaces(address);
-//   geocode(address);
-//   document.getElementById('address').value = '';
-//   const input = document.getElementById('address');
-//   const autocomplete = new google.maps.places.Autocomplete(input);
-// };
