@@ -35,7 +35,7 @@ function addSingleMarker(coords) {
     map,
     icon,
   });
-  map.setCenter(coords)
+  map.setCenter(coords);
   const contentString = `
   <h2>X marks the spot</h2>
 
@@ -126,7 +126,7 @@ function addMarkerPlaces(places) {
     });
 
     marker[i].addListener('click', () => {
-      placeDetails(place.place_id)
+      placeDetails(place.place_id);
     });
 
     marker[i].addListener('mouseout', () => {
@@ -171,28 +171,27 @@ async function findPlaces(text) {
   await service.textSearch(request, (places, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       addMarkerPlaces(places);
-      document.getElementById('addList').innerHTML = ""
+      document.getElementById('addList').innerHTML = '';
       places.forEach((place, index) => {
-        console.log('places', place)
-        
+        console.log('places', place);
+
         document.getElementById('addList').innerHTML += `
         <li class="addPlace">${place.name} ${place.formatted_address}
         <input type="hidden" value="${index}">
         <button class="fillListButton">Selecionar</button>
         </li>
         `;
-      })
-      const addButton = document.querySelectorAll(".fillListButton");
+      });
+      const addButton = document.querySelectorAll('.fillListButton');
       addButton.forEach((button, index) => {
         button.onclick = function () {
-          console.log(index)
-          placeDetails(places[index].place_id)
-          addSingleMarker(places[index].geometry.location)
-        }
-      })
+          console.log(index);
+          placeDetails(places[index].place_id);
+          addSingleMarker(places[index].geometry.location);
+        };
+      });
     }
   });
- 
 }
 
 
@@ -212,29 +211,65 @@ function placeDetails(id) {
       let workTime = '';
       place.opening_hours.weekday_text.forEach((day) => {
         workTime += `${day.toString()}\n`;
-      })
-
+      });
+      document.getElementById('clearSelection').innerHTML = `
+      <button id="clearSelectionButton">Limpar Seleção</button>
+      `;
+      document.getElementById('clearSelectionButton').onclick = function () {
+        clearFields();
+      };
       document.getElementById('name').value = place.name;
+      blockField('name');
       document.getElementById('telefone').value = place.formatted_phone_number;
       document.getElementById('Endereço').value = place.formatted_address;
+      blockField('Endereço');
       document.getElementById('weekday').value = workTime;
       document.getElementById('form-coord').value = JSON.stringify(place.geometry.location);
       document.getElementById('form-placeID').value = place.place_id;
       document.getElementById('form-rating').value = place.rating;
       place.photos.forEach((photo) => {
-        document.getElementById('form-googlePhotos').innerHTML+=`
+        document.getElementById('form-googlePhotos').innerHTML += `
         <input type="hidden" class="form-photosClass" name="googlePhotos[]" type="text" value="${photo.getUrl()}">
         `;
-      })
+      });
       place.reviews.forEach((review) => {
-        console.log(JSON.stringify(review))
-        document.getElementById('form-googleReviews').innerHTML+=`
-        <input type="hidden" class="form-googleReviewClass" name="googleReviews[]" type="text" value="${JSON.stringify(review).toString()}">
+        const { author_name, rating, relative_time_description, text } = review;
+        // const reviewString = JSON.stringify(author_name);
+        const reviewString = (text);
+        console.log(reviewString, typeof (reviewString));
+        document.getElementById('form-googleReviews').innerHTML += `
+        <input type="hidden" class="form-googleReviewClass" name="googleReviews[]" type="text" value = "${reviewString}">
         `;
-      })
-
-      // console.log(place.opening_hours)
+      });
     }
   }
-} 
- //weekday, photos, googleReviews, price }
+}
+
+function blockField(field) {
+  document.getElementById(field).readOnly = true;
+  document.getElementById(field).classList.add('blocked');
+  document.getElementById(field).onclick = function () {
+    document.getElementById(`blockedField${field}`).innerHTML += `
+    Campo não pode ser alterado. Se quiser cadastrar um local diferente clique em "Limpar Seleção"
+    `;
+  };
+  document.getElementById(field).onfocusout = function () {
+    document.getElementById(`blockedField${field}`).innerHTML = '';
+  };
+}
+
+function clearFields() {
+  document.getElementById('name').value = '';
+  document.getElementById('name').readOnly = false;
+  document.getElementById('name').classList.remove('blocked');
+  document.getElementById('telefone').value = '';
+  document.getElementById('Endereço').value = '';
+  document.getElementById('Endereço').readOnly = false;
+  document.getElementById('Endereço').classList.remove('blocked');
+  document.getElementById('weekday').value = '';
+  document.getElementById('form-coord').value = '';
+  document.getElementById('form-placeID').value = '';
+  document.getElementById('form-rating').value = '';
+  document.getElementById('form-googlePhotos').innerHTML = '';
+  document.getElementById('form-googleReviews').innerHTML = '';
+}

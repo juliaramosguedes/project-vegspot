@@ -3,9 +3,6 @@ window.onload = () => {
   const inputSearchAddress = document.getElementById('addLocalSearch');
   const autocompleteSearch = new google.maps.places.Autocomplete(inputSearchAddress);
 
-  const addName = document.getElementById('name');
-  const autocompleteName = new google.maps.places.Autocomplete(addName);
-  
   const addAddress = document.getElementById('Endereço');
   const autocompleteAddress = new google.maps.places.Autocomplete(addAddress);
   

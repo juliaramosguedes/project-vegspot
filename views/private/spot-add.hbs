@@ -7,9 +7,11 @@
 <section class="container d-flex flex-column justify-content-center align-items-center" id="add-spot">
   <h1>Cadastro de locais</h1>
   <br>
+  <div id="clearSelection"></div>
   <form action="/spot/add" method="POST" id="form-container">
     <label for="name">Nome do local</label><br>
     <input id="name" type="text" name="name" class="form-control-lg">
+    <div id="blockedFieldname"></div>
     <br><br>
     <label for="telefone">Telefone</label><br>
     <input id="telefone" type="text" name="phone" class="form-control-lg">
@@ -17,6 +19,7 @@
     <label for="Endereço">Endereço</label><br>
     <input id="Endereço" type="text" name="address" class="form-control-lg">
     <div id="addressChecker"></div>
+    <div id="blockedFieldEndereço"></div>
       <br><br>
     <label for="vegCategory">Categoria</label><br>
     <select name="vegCategory" id="vegCategory" class="form-control-lg">
