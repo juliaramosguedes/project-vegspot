@@ -1,7 +1,7 @@
  <h2>Procura um lugar</h2>
   Local: <input type="text" name="fname" id="addLocalSearch">
   <button id="addLocalButton">Procurar</button>
-  <div id="formatted-address">endereco novo</div>
+  <ul id="addList"></ul>
  <div id="map"></div>
  
 <section class="container d-flex flex-column justify-content-center align-items-center" id="add-spot">
@@ -16,6 +16,7 @@
       <br><br>
     <label for="Endereço">Endereço</label><br>
     <input id="Endereço" type="text" name="address" class="form-control-lg">
+    <div id="addressChecker"></div>
       <br><br>
     <label for="vegCategory">Categoria</label><br>
     <select name="vegCategory" id="vegCategory" class="form-control-lg">
@@ -79,6 +80,7 @@
       <div class="error-message">{{ message }}</div>
     {{/if}}
     <br>
+    <input type="hidden" class="form-coord" name="coord" type="text">
     <button type="submit" class="btn btn-primary">Cadastrar local</button>
   </form>
 </section>

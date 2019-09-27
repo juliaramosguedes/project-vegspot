@@ -35,7 +35,7 @@ function addSingleMarker(coords) {
     map,
     icon,
   });
-
+  map.setCenter(coords)
   const contentString = `
   <h2>X marks the spot</h2>
 
@@ -112,7 +112,6 @@ function addMarkerPlaces(places) {
     contentString[i] = `
     <div>${place.name}</div>
     <div>${place.formatted_address}</div>
-    <button class='botao-cadastro'>cadastre</button>
     `;
     marker[i] = new google.maps.Marker({
       position: coords,
@@ -127,7 +126,7 @@ function addMarkerPlaces(places) {
     });
 
     marker[i].addListener('click', () => {
-      console.log(place);
+      placeDetails(place.place_id)
     });
 
     marker[i].addListener('mouseout', () => {
@@ -160,8 +159,6 @@ async function geocode(location) {
   }
 }
 
-let myPlaces;
-
 async function findPlaces(text) {
   const request = {
     location: pos,
@@ -172,33 +169,32 @@ async function findPlaces(text) {
   };
   const service = new google.maps.places.PlacesService(map);
   await service.textSearch(request, (places, status) => {
-    myPlaces = places;
-    console.log('DENTRO DA CALLBACK DO TEXT SEARCH');
-  });
-  if (myPlaces) {
-    return myPlaces;
-  }
-}
-
-/* async function findPlaces(text) {
-  const request = {
-    location: pos,
-    radius: '500',
-    query: text,
-    // bounds: 'strictbounds',
-    // type: ['restaurant'],
-  };
-  console.log('request location', request.location);
-  service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, callback);
-
-  function callback(places, status) {
-    console.log('find places', places);
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       addMarkerPlaces(places);
+      document.getElementById('addList').innerHTML = ""
+      places.forEach((place, index) => {
+        console.log('places', place)
+        
+        document.getElementById('addList').innerHTML += `
+        <li class="addPlace">${place.name} ${place.formatted_address}
+        <input type="hidden" value="${index}">
+        <button class="fillListButton">Selecionar</button>
+        </li>
+        `;
+      })
+      const addButton = document.querySelectorAll(".fillListButton");
+      addButton.forEach((button, index) => {
+        button.onclick = function () {
+          console.log(index)
+          placeDetails(places[index].place_id)
+        }
+      })
+      console.log(addButton)
     }
-  }
-} */
+  });
+ 
+}
+
 
 function placeDetails(id) {
   const request = {
@@ -212,6 +208,10 @@ function placeDetails(id) {
   function callback(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       console.log('place details', place);
+      document.getElementById('name').value = place.name;
+      document.getElementById('telefone').value = place.formatted_phone_number
+      document.getElementById('Endereço').value = place.formatted_address;
+      console.log(place.opening_hours)
     }
   }
 }

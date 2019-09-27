@@ -23,14 +23,13 @@ window.onload = () => {
       const placeId = response.data.results[0].place_id;
       addSingleMarker(coord);
       //await placeDetails(placeId);
-      document.getElementById('formatted-address').innerHTML += `
-      ${formattedAddress}
-      `;
+      // document.getElementById('formatted-address').innerHTML += `
+      // ${formattedAddress}
+      // `;
       console.log('response', response, coord, formattedAddress, placeId);
       
       //addMarkerPlaces(places);
-      const placesResult = await findPlaces(address)
-      console.log('placesResult', placesResult)
+      findPlaces(address)
       document.getElementById('addLocalSearch').value = '';
     } catch (error) {
       console.log(error);
@@ -38,4 +37,25 @@ window.onload = () => {
  
   };
 
+  document.getElementById('Endereço').onfocusout = async function () {
+    let geoAddress = document.getElementById('Endereço').value;
+    let geoInfo = await geocode(geoAddress)
+    console.log(geoInfo.data.results.length)
+    if(geoInfo.data.results.length > 0) {
+      let geoCoord = JSON.stringify(geoInfo.data.results[0].geometry.location)
+      console.log('geoCoord entrei', geoCoord)
+      addSingleMarker(JSON.parse(geoCoord))
+      document.querySelector(".form-coord").value = geoCoord;
+      console.log(document.querySelector(".form-coord").value)
+    } else {
+      document.getElementById("addressChecker").innerHTML="Endereco nao eh valido"
+
+    }
+
+
+
+  }
+
 }
+
+//onblur() or onfocusout()
