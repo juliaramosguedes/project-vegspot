@@ -44,7 +44,7 @@ window.onload = () => {
       let geoCoord = JSON.stringify(geoInfo.data.results[0].geometry.location)
       addSingleMarker(JSON.parse(geoCoord))
       document.querySelector(".form-coord").value = geoCoord;
-      console.log(document.querySelector(".form-coord").value)
+      console.log(document.getElementById("form-coord").value)
     } else {
       document.getElementById("addressChecker").innerHTML="Endereco nao eh valido"
 

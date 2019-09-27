@@ -187,7 +187,7 @@ async function findPlaces(text) {
         button.onclick = function () {
           console.log(index)
           placeDetails(places[index].place_id)
-          console.log(places[index].geometry.location)
+          addSingleMarker(places[index].geometry.location)
         }
       })
     }
@@ -207,12 +207,34 @@ function placeDetails(id) {
 
   function callback(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      console.log('place details', place, place.geometry.location.lat);
-      console.log('place coord', place.geometry.location);
+      console.log('place details', place);
+      console.log('place coord', JSON.stringify(place.geometry.location));
+      let workTime = '';
+      place.opening_hours.weekday_text.forEach((day) => {
+        workTime += `${day.toString()}\n`;
+      })
+
       document.getElementById('name').value = place.name;
-      document.getElementById('telefone').value = place.formatted_phone_number
+      document.getElementById('telefone').value = place.formatted_phone_number;
       document.getElementById('Endereço').value = place.formatted_address;
+      document.getElementById('weekday').value = workTime;
+      document.getElementById('form-coord').value = JSON.stringify(place.geometry.location);
+      document.getElementById('form-placeID').value = place.place_id;
+      document.getElementById('form-rating').value = place.rating;
+      place.photos.forEach((photo) => {
+        document.getElementById('form-googlePhotos').innerHTML+=`
+        <input type="hidden" class="form-photosClass" name="googlePhotos[]" type="text" value="${photo.getUrl()}">
+        `;
+      })
+      place.reviews.forEach((review) => {
+        console.log(JSON.stringify(review))
+        document.getElementById('form-googleReviews').innerHTML+=`
+        <input type="hidden" class="form-googleReviewClass" name="googleReviews[]" type="text" value="${JSON.stringify(review).toString()}">
+        `;
+      })
+
       // console.log(place.opening_hours)
     }
   }
-}
+} 
+ //weekday, photos, googleReviews, price }

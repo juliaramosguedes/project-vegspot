@@ -25,8 +25,9 @@ router.get('/add', ensureLogin.ensureLoggedIn(), (req, res, next) => {
 });
 
 router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
-  const { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price } = req.body;
-  console.log(coord)
+  const { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price, googlePhotos } = req.body;
+  console.log('coords', coord)
+  console.log('googleReview', googleReviews)
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
