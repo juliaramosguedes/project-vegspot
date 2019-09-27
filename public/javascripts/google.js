@@ -152,6 +152,7 @@ async function geocode(location) {
         params: {
           address: location,
           key: 'AIzaSyCmsgN1sAoxmCU5VgToMMNPMrWooHKqNJo',
+          region: 'br',
         },
       });
   } catch (error) {
@@ -262,10 +263,12 @@ function clearFields() {
   document.getElementById('name').value = '';
   document.getElementById('name').readOnly = false;
   document.getElementById('name').classList.remove('blocked');
+  document.getElementById('name').onclick = '';
   document.getElementById('telefone').value = '';
   document.getElementById('Endereço').value = '';
   document.getElementById('Endereço').readOnly = false;
   document.getElementById('Endereço').classList.remove('blocked');
+  document.getElementById('Endereço').onclick = '';
   document.getElementById('weekday').value = '';
   document.getElementById('form-coord').value = '';
   document.getElementById('form-placeID').value = '';
