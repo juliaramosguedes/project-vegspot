@@ -14,7 +14,7 @@ window.onload = () => {
     try {
       event.preventDefault();
       const address = document.getElementById('addLocalSearch').value;
-      console.log('address', address);
+      // console.log('address', address);
       //findPlaces(address);
       
       const response = await geocode(address);
@@ -40,10 +40,8 @@ window.onload = () => {
   document.getElementById('Endereço').onfocusout = async function () {
     let geoAddress = document.getElementById('Endereço').value;
     let geoInfo = await geocode(geoAddress)
-    console.log(geoInfo.data.results.length)
     if(geoInfo.data.results.length > 0) {
       let geoCoord = JSON.stringify(geoInfo.data.results[0].geometry.location)
-      console.log('geoCoord entrei', geoCoord)
       addSingleMarker(JSON.parse(geoCoord))
       document.querySelector(".form-coord").value = geoCoord;
       console.log(document.querySelector(".form-coord").value)

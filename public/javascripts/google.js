@@ -187,9 +187,9 @@ async function findPlaces(text) {
         button.onclick = function () {
           console.log(index)
           placeDetails(places[index].place_id)
+          console.log(places[index].geometry.location)
         }
       })
-      console.log(addButton)
     }
   });
  
@@ -207,11 +207,12 @@ function placeDetails(id) {
 
   function callback(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      console.log('place details', place);
+      console.log('place details', place, place.geometry.location.lat);
+      console.log('place coord', place.geometry.location);
       document.getElementById('name').value = place.name;
       document.getElementById('telefone').value = place.formatted_phone_number
       document.getElementById('Endereço').value = place.formatted_address;
-      console.log(place.opening_hours)
+      // console.log(place.opening_hours)
     }
   }
 }
