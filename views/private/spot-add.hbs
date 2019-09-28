@@ -1,11 +1,20 @@
- <h2>Procura um lugar</h2>
-  Local: <input type="text" name="fname" id="addLocalSearch">
-  <button id="addLocalButton">Procurar</button>
+<section class="d-flex flex-column justify-content-center align-items-center my-3">
+  <h1>Cadastre um lugar</h1>
+  <label class="sr-only" for="Add spot">Add spot</label>
+  <div class="input-group col-10 col-md-6">
+    <input type="text" name="fname" id="addLocalSearch" class="form-control form-control-lg" placeholder="Pesquise um lugar" aria-label="Search for a spot" aria-describedby="search-spot">
+    <div class="input-group-append">
+      <button id="addLocalButton"  class="btn btn-info" type="submit"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482761/project-vegspot/search.png" alt="Search Icon" height="30"></button>
+    </div>
+  </div>
+  <br>
   <ul id="addList"></ul>
- <div id="map"></div>
- 
-<section class="container d-flex flex-column justify-content-center align-items-center" id="add-spot">
-  <h1>Cadastro de locais</h1>
+</section>
+<section class="d-flex justify-content-center">
+  <div id="map" class="col-10 col-md-6"></div>
+</section>
+<section class="d-flex flex-column justify-content-center align-items-center my-5">
+  <h1>Informações</h1>
   <br>
   <div id="clearSelection"></div>
   <form action="/spot/add" method="POST" id="form-container">
@@ -88,7 +97,7 @@
     <input type="hidden" id="form-rating" name="googleRating" type="number">
     <div id="form-googlePhotos"></div>
     <div id="form-googleReviews"></div>
-    <button type="submit" class="btn btn-primary">Cadastrar local</button>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
   </form>
 </section>
 
