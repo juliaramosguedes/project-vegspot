@@ -12,7 +12,7 @@ const checkAchiever = checkRoles('achiever');
 router.post('/search', async (req, res) => {
   const { searchSpot } = req.body;
   try {
-    const spots = await Spot.find({ name: { "$regex": searchSpot, "$options": "i" } });
+    const spots = await Spot.find({ status: 'ativo', name: { "$regex": searchSpot, "$options": "i" } });
     res.render('public/search', { spots });
   } catch (error) {
     console.log(error);
@@ -60,10 +60,12 @@ router.get('/profile/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const spot = await Spot.findById(id);
+
+    if (!req.user || req.user.role === 'user') {
+      res.render('public/spot-profile', spot);
+    }
     if (req.user.role === 'achiever') {
       res.render('private/spot-adm', spot);
-    } else {
-      res.render('public/spot-profile', spot);
     }
   } catch (error) {
     console.log(error);
@@ -82,7 +84,7 @@ router.get('/edit/:id', checkAchiever, async (req, res, next) => {
 
 router.post('/edit/:id', checkAchiever, async (req, res, next) => {
   const { id } = req.params;
-  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos } = req.body;
+  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos, status } = req.body;
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
@@ -91,7 +93,7 @@ router.post('/edit/:id', checkAchiever, async (req, res, next) => {
   }
 
   try {
-    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos });
+    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos, status });
     res.redirect('/');
   } catch (error) {
     console.log(error);
