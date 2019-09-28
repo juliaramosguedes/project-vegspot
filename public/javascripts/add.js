@@ -8,6 +8,7 @@ window.onload = () => {
   autocompleteAddress.setComponentRestrictions({ country: ['br'] });
 
   document.getElementById('addLocalButton').onclick = async function (event) {
+
     try {
       event.preventDefault();
       const address = document.getElementById('addLocalSearch').value;
@@ -44,6 +45,7 @@ window.onload = () => {
         addSingleMarker(JSON.parse(geoCoord));
         document.querySelector('#form-coord').value = geoCoord;
         console.log(document.getElementById('form-coord').value);
+        document.getElementById('addressChecker').innerHTML = '';
       } else {
         document.getElementById('addressChecker').innerHTML = 'Endereco nao eh valido';
       }

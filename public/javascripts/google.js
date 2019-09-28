@@ -24,7 +24,12 @@ function initMap() {
     });
   } else {
     // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
+    //handleLocationError(false, infoWindow, map.getCenter());
+    pos = {
+      lat: -23.5617714,
+      lng: -46.66019,
+    };
+    map.setCenter(pos);
   }
 }
 
@@ -235,7 +240,7 @@ function placeDetails(id) {
       });
       place.reviews.forEach((review) => {
         const { author_name, rating, relative_time_description, text } = review;
-        // const reviewString = JSON.stringify(author_name);
+        //const reviewString = JSON.stringify(author_name);
         const reviewString = (text);
         console.log(reviewString, typeof (reviewString));
         document.getElementById('form-googleReviews').innerHTML += `
