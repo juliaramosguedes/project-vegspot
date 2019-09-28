@@ -13,9 +13,7 @@ html, body {
 }
 
 .login {
-  text-align: end;
   font-size: 1.7em;
-  padding-bottom: 10px;
 }
 
 .dark-blue {
@@ -39,24 +37,16 @@ html, body {
   font-family: 'Gayathri', sans-serif;
 }
 
-.container {
-  width: 50%;
-  margin: 30px auto;
-}
-
-#govegan {
-  padding: 30px;
-}
-
 .spot-img {
-  width: 150px;
-}
-
-.add-spot {
-  padding: 30px;
+  width: 200px;
 }
 
 .blocked {
   background-color: grey;
   /*pointer-events: none;*/
+}
+
+.rating-star {
+  width: 40px;
+  padding-bottom: 7px;
 }

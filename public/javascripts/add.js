@@ -1,5 +1,4 @@
 window.onload = () => {
-  console.log('carregou');
   const inputSearchAddress = document.getElementById('addLocalSearch');
   const autocompleteSearch = new google.maps.places.Autocomplete(inputSearchAddress);
   autocompleteSearch.setComponentRestrictions({ country: ['br'] });
@@ -9,7 +8,6 @@ window.onload = () => {
   autocompleteAddress.setComponentRestrictions({ country: ['br'] });
 
   document.getElementById('addLocalButton').onclick = async function (event) {
-    console.log('cliquei');
     try {
       event.preventDefault();
       const address = document.getElementById('addLocalSearch').value;
