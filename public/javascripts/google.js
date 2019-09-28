@@ -1,57 +1,51 @@
-let map; let infoWindow; let pos;
-
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition((position) => {
-    pos = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    };
-  }, () => {
-    handleLocationError(true, infoWindow, map.getCenter());
-  });
-} else {
-  // Browser doesn't support Geolocation
-  handleLocationError(false, infoWindow, map.getCenter());
-}
+let pos;
 
 function initMap() {
-  if (!pos) {
-    pos = { lat: -23.5506507, lng: -46.6333824 };
-  }
-
   map = new google.maps.Map(document.getElementById('map'), {
-    // center: { lat: -23.5506507, lng: -46.6333824 },
-    center: pos,
-    zoom: 17,
+    center: { lat: -34.397, lng: 150.644 },
+    zoom: 15,
   });
-
   infoWindow = new google.maps.InfoWindow();
-  infoWindow.setPosition(pos);
-  infoWindow.setContent('Voce esta aqui.');
-  infoWindow.open(map);
-  map.setCenter(pos);
-  addMarker(pos);
 
-  input = document.getElementById('address');
-  const autocomplete = new google.maps.places.Autocomplete(input);
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+
+      infoWindow.setPosition(pos);
+      infoWindow.setContent('Location found.');
+      infoWindow.open(map);
+      map.setCenter(pos);
+    }, () => {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation
-    ? 'Error: The Geolocation service failed.'
-    : 'Error: Your browser doesn\'t support geolocation.');
-  infoWindow.open(map);
-}
-
-function addMarker(coords) {
+function addSingleMarker(coords) {
+  icon = 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png';
   const marker = new google.maps.Marker({
     position: coords,
     map,
-    icon: 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
+    icon,
   });
+  map.setCenter(coords);
+  const contentString = `
+  <h2>X marks the spot</h2>
 
-  const contentString = '<h1>holy</h1>';
+  `;
+
+  /* const contentString = `
+  <h2>${name}</h2>
+  <h2>${address}</h2>
+  <h2>${rating}</h2>
+  `; */
   const infowindow = new google.maps.InfoWindow({
     content: contentString,
   });
@@ -69,25 +63,24 @@ function addMarker(coords) {
   });
 }
 
-function addMarkerPlaces(places) {
-  //deleteMarkers();
+function addMarker(places) {
   infoWindow = new google.maps.InfoWindow();
   const bounds = new google.maps.LatLngBounds();
-  let contentString = []
-  let marker = []
+  const contentString = [];
+  const marker = [];
   for (let i = 0; i < places.length; i++) {
-    let place = places[i];
-    let coords = place.geometry.location;
-    console.log(place.name, place.formatted_address);
+    const place = places[i];
+
     contentString[i] = `
-    <div>${place.name}</div>
-    <div>${place.formatted_address}</div>
-    <button class='botao-cadastro'>cadastre</button>
+    <div class = 'marker-title'>${place.title}</div>
+    <div class = 'marker-category'>${place.vegCategory}</div>
+    <div class = 'marker-address'>${place.address}</div>
     `;
     marker[i] = new google.maps.Marker({
-      position: coords,
+      position: place.coord,
       map,
-      icon: 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
+      icon:
+        'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
     });
 
     marker[i].addListener('mouseover', () => {
@@ -102,66 +95,105 @@ function addMarkerPlaces(places) {
     marker[i].addListener('mouseout', () => {
       infoWindow.close();
     });
+    bounds.extend(places[i].coord);
+  }
+  map.fitBounds(bounds);
+}
+
+function addMarkerPlaces(places) {
+  const infoWindow = new google.maps.InfoWindow();
+  const bounds = new google.maps.LatLngBounds();
+  const contentString = [];
+  const marker = [];
+  for (let i = 0; i < places.length; i++) {
+    const place = places[i];
+    const coords = place.geometry.location;
+    console.log(place.name, place.formatted_address);
+    contentString[i] = `
+    <div>${place.name}</div>
+    <div>${place.formatted_address}</div>
+    `;
+    marker[i] = new google.maps.Marker({
+      position: coords,
+      map,
+      icon:
+        'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
+    });
+
+    marker[i].addListener('mouseover', () => {
+      infoWindow.setContent(contentString[i]);
+      infoWindow.open(map, marker[i]);
+    });
+
+    marker[i].addListener('click', () => {
+      placeDetails(place.place_id);
+    });
+
+    marker[i].addListener('mouseout', () => {
+      infoWindow.close();
+    });
     bounds.extend(places[i].geometry.location);
   }
   map.fitBounds(bounds);
-  console.log(marker.length)
+}
 
-  function deleteMarkers(){
-    if(typeof(marker)){
-      console.log('entrei')
-      for(let i = 0; i < marker.length; i++){
-        marker[i] = setMap(null)
-      }
-    }
+// function deleteMarkers() {
+//   if (typeof marker) {
+//     console.log('entrei');
+//     for (let i = 0; i < marker.length; i++) {
+//       marker[i] = setMap(null);
+//     }
+//   }
+// }
+async function geocode(location) {
+  try {
+    return await axios
+      .get('https://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+          address: location,
+          key: 'AIzaSyCmsgN1sAoxmCU5VgToMMNPMrWooHKqNJo',
+          region: 'br',
+        },
+      });
+  } catch (error) {
+    console.log(error);
   }
 }
 
-
-
-function geocode(location) {
-  axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-    params: {
-      address: location,
-      key: 'AIzaSyBMHh2PAjIzu_M-qkzRXzMGqMzjMxLAuMY',
-    },
-  })
-    .then((response) => {
-      console.log('response', response);
-
-      const coord = response.data.results[0].geometry.location;
-      const formattedAddress = response.data.results[0].formatted_address;
-      const placeId = response.data.results[0].place_id;
-      document.getElementById('formatted-address').innerHTML += `${formattedAddress}`;
-      addMarker(coord);
-      console.log('geocode', coord, formattedAddress, placeId);
-      placeDetails(placeId);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-function findPlaces(text) {
+async function findPlaces(text) {
   const request = {
     location: pos,
     radius: '500',
     query: text,
-    //bounds: 'strictbounds',
-    //type: ['restaurant'],
+    // bounds: 'strictbounds',
+    // type: ['restaurant'],
   };
-  console.log('request location', request.location)
-  service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, callback);
-
-  function callback(places, status) {
-    console.log('places', places);
+  const service = new google.maps.places.PlacesService(map);
+  await service.textSearch(request, (places, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       addMarkerPlaces(places);
-    }
-  }
-}
+      document.getElementById('addList').innerHTML = '';
+      places.forEach((place, index) => {
+        console.log('places', place);
 
+        document.getElementById('addList').innerHTML += `
+        <li class="addPlace">${place.name} ${place.formatted_address}
+        <input type="hidden" value="${index}">
+        <button class="fillListButton">Selecionar</button>
+        </li>
+        `;
+      });
+      const addButton = document.querySelectorAll('.fillListButton');
+      addButton.forEach((button, index) => {
+        button.onclick = function () {
+          console.log(index);
+          placeDetails(places[index].place_id);
+          addSingleMarker(places[index].geometry.location);
+        };
+      });
+    }
+  });
+}
 
 
 function placeDetails(id) {
@@ -175,18 +207,72 @@ function placeDetails(id) {
 
   function callback(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      console.log(place);
+      console.log('place details', place);
+      console.log('place coord', JSON.stringify(place.geometry.location));
+      let workTime = '';
+      place.opening_hours.weekday_text.forEach((day) => {
+        workTime += `${day.toString()}\n`;
+      });
+      document.getElementById('clearSelection').innerHTML = `
+      <button id="clearSelectionButton">Limpar Seleção</button>
+      `;
+      document.getElementById('clearSelectionButton').onclick = function () {
+        clearFields();
+      };
+      document.getElementById('name').value = place.name;
+      blockField('name');
+      document.getElementById('telefone').value = place.formatted_phone_number;
+      document.getElementById('Endereço').value = place.formatted_address;
+      blockField('Endereço');
+      document.getElementById('weekday').value = workTime;
+      document.getElementById('form-coord').value = JSON.stringify(place.geometry.location);
+      document.getElementById('form-placeID').value = place.place_id;
+      document.getElementById('form-rating').value = place.rating;
+      place.photos.forEach((photo) => {
+        document.getElementById('form-googlePhotos').innerHTML += `
+        <input type="hidden" class="form-photosClass" name="googlePhotos[]" type="text" value="${photo.getUrl()}">
+        `;
+      });
+      place.reviews.forEach((review) => {
+        const { author_name, rating, relative_time_description, text } = review;
+        // const reviewString = JSON.stringify(author_name);
+        const reviewString = (text);
+        console.log(reviewString, typeof (reviewString));
+        document.getElementById('form-googleReviews').innerHTML += `
+        <input type="hidden" class="form-googleReviewClass" name="googleReviews[]" type="text" value = "${reviewString}">
+        `;
+      });
     }
   }
 }
 
+function blockField(field) {
+  document.getElementById(field).readOnly = true;
+  document.getElementById(field).classList.add('blocked');
+  document.getElementById(field).onclick = function () {
+    document.getElementById(`blockedField${field}`).innerHTML += `
+    Campo não pode ser alterado. Se quiser cadastrar um local diferente clique em "Limpar Seleção"
+    `;
+  };
+  document.getElementById(field).onfocusout = function () {
+    document.getElementById(`blockedField${field}`).innerHTML = '';
+  };
+}
 
-document.getElementById('button').onclick = function (event) {
-  event.preventDefault();
-  document.getElementById('formatted-address').innerHTML = '';
-  const address = document.getElementById('address').value;
-  console.log('address', address);
-  findPlaces(address);
-  geocode(address);
-  document.getElementById('address').value = '';
-};
+function clearFields() {
+  document.getElementById('name').value = '';
+  document.getElementById('name').readOnly = false;
+  document.getElementById('name').classList.remove('blocked');
+  document.getElementById('name').onclick = '';
+  document.getElementById('telefone').value = '';
+  document.getElementById('Endereço').value = '';
+  document.getElementById('Endereço').readOnly = false;
+  document.getElementById('Endereço').classList.remove('blocked');
+  document.getElementById('Endereço').onclick = '';
+  document.getElementById('weekday').value = '';
+  document.getElementById('form-coord').value = '';
+  document.getElementById('form-placeID').value = '';
+  document.getElementById('form-rating').value = '';
+  document.getElementById('form-googlePhotos').innerHTML = '';
+  document.getElementById('form-googleReviews').innerHTML = '';
+}
