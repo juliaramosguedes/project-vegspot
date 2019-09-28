@@ -1,15 +1,25 @@
+ <h2>Procura um lugar</h2>
+  Local: <input type="text" name="fname" id="addLocalSearch">
+  <button id="addLocalButton">Procurar</button>
+  <ul id="addList"></ul>
+ <div id="map"></div>
+ 
 <section class="container d-flex flex-column justify-content-center align-items-center" id="add-spot">
   <h1>Cadastro de locais</h1>
   <br>
+  <div id="clearSelection"></div>
   <form action="/spot/add" method="POST" id="form-container">
     <label for="name">Nome do local</label><br>
     <input id="name" type="text" name="name" class="form-control-lg">
+    <div id="blockedFieldname"></div>
     <br><br>
     <label for="telefone">Telefone</label><br>
     <input id="telefone" type="text" name="phone" class="form-control-lg">
       <br><br>
     <label for="Endereço">Endereço</label><br>
     <input id="Endereço" type="text" name="address" class="form-control-lg">
+    <div id="addressChecker"></div>
+    <div id="blockedFieldEndereço"></div>
       <br><br>
     <label for="vegCategory">Categoria</label><br>
     <select name="vegCategory" id="vegCategory" class="form-control-lg">
@@ -73,6 +83,15 @@
       <div class="error-message">{{ message }}</div>
     {{/if}}
     <br>
+    <input type="hidden" id="form-coord" name="coord" type="text">
+    <input type="hidden" id="form-placeID" name="googlePlaceId" type="text">
+    <input type="hidden" id="form-rating" name="rating" type="number">
+    <div id="form-googlePhotos"></div>
+    <div id="form-googleReviews"></div>
     <button type="submit" class="btn btn-primary">Cadastrar local</button>
   </form>
 </section>
+
+  <!-- JavaScript -->
+  <script src="/javascripts/add.js"></script>
+
