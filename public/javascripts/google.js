@@ -23,8 +23,13 @@ function initMap() {
       handleLocationError(true, infoWindow, map.getCenter());
     });
   } else {
-    // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
+   // Browser doesn't support Geolocation
+    //handleLocationError(false, infoWindow, map.getCenter());
+    pos = {
+      lat: -23.5617714,
+      lng: -46.66019,
+    };
+    map.setCenter(pos);
   }
 }
 

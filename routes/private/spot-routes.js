@@ -25,9 +25,8 @@ router.get('/add', ensureLogin.ensureLoggedIn(), (req, res, next) => {
 });
 
 router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
-  const { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price, googlePhotos } = req.body;
-  console.log('coords', coord)
-  console.log('googleReview', googleReviews)
+  const { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price, googlePhotos, googleRating } = req.body;
+  console.log('googlePhotos', googlePhotos)
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
@@ -41,7 +40,7 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
       res.render("private/spot-add", { message: "O nome desse local já está cadastrado." });
       return;
     }
-    const newSpot = new Spot({ name, authorId, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price });
+    const newSpot = new Spot({ name, authorId, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, googlePhotos, googleRating, price });
     newSpot.save((err) => {
       if (err) {
         console.log(err);

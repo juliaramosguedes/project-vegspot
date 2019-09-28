@@ -29,6 +29,8 @@ const spotSchema = Schema(
     weekday: { type: String, required: true },
     photos: Array,
     googleReviews: Array,
+    googlePhotos: Array,
+    googleRating: Number,
     price: Number,
     status: {
       type: String,
