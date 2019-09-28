@@ -12,8 +12,13 @@ const checkAchiever = checkRoles('achiever');
 router.post('/search', async (req, res) => {
   const { searchSpot } = req.body;
   try {
-    const spots = await Spot.find({ status: 'ativo', name: { "$regex": searchSpot, "$options": "i" } });
-    res.render('public/search', { spots });
+    if (!req.user || req.user.role === 'user') {
+      const spots = await Spot.find({ status: 'ativo', name: { "$regex": searchSpot, "$options": "i" } });
+      res.render('public/search', { spots });
+    } else {
+      const spots = await Spot.find({ name: { "$regex": searchSpot, "$options": "i" } });
+      res.render('public/search', { spots });
+    }
   } catch (error) {
     console.log(error);
     res.redirect('/');
@@ -62,8 +67,7 @@ router.get('/profile/:id', async (req, res, next) => {
 
     if (!req.user || req.user.role === 'user') {
       res.render('public/spot-profile', spot);
-    }
-    if (req.user.role === 'achiever') {
+    } else {
       res.render('private/spot-adm', spot);
     }
   } catch (error) {
