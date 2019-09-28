@@ -71,6 +71,12 @@
     <label for="Foto">Url da foto</label><br>
     <input id="Foto" type="text" name="photos" class="form-control-lg" value="{{photos}}">
       <br><br>
+    <label for="status">Status do local</label><br>
+    <select name="status" id="status" class="form-control-lg">
+      <option value="ativo" selected>Ativo</option>
+      <option value="inativo">Inativo</option>
+    </select>
+    <br><br>
     {{#if message}}
       <div class="error-message">{{ message }}</div>
     {{/if}}
