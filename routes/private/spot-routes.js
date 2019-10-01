@@ -37,9 +37,7 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
   // console.log('googleReviewsRaw', googleReviews, typeof(googleReviews))
   const reviewArray = []
   googleReviews.forEach((review, index) => {
-    console.log('1')
     let reviewString = review.replace(/\*/g, '"');
-    console.log(reviewString);
     reviewString = JSON.parse(reviewString.toString());
     reviewString.text = googleReviewsText[index]
     console.log('googleReviewsPartial', reviewString, typeof(reviewString))
@@ -47,8 +45,7 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     
   });
   googleReviews = reviewArray;
-  console.log('googleReviews', googleReviews, typeof(googleReviews))
-
+  
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
@@ -56,7 +53,7 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     return;
   }
   
-  Spot.findOne({ name })
+  Spot.findOne({ googlePlaceId })
   .then(user => {
     if (user) {
       res.render("private/spot-add", { message: "O nome desse local já está cadastrado." });

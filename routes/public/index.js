@@ -7,6 +7,12 @@ router.get('/', (req, res, next) => {
   res.render('public/index');
 });
 
+router.post('/', async (req, res, next) => {
+  position = req.body
+  console.log('sucesso', position)
+});
+
+
 module.exports = router;
 
 
