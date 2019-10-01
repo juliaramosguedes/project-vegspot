@@ -1,7 +1,7 @@
-<img class="spot-img" src="{{this.photos}}" alt="Card image">
+<img class="spot-img" src="{{this.photos.[0]}}" alt="Card image">
 <div class="spot-body">
-  <h1 class="spot-title"><a href="/spot/profile/{{this._id}}">{{this.name}}</a> - {{this.rating}}</h1>
-  <h2 class="spot-category">{{this.vegCategory}}</h2>
+  <h2 class="spot-title"><a href="/spot/profile/{{this._id}}">{{this.name}}</a> - <img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1569688377/project-vegspot/star.png" alt="Rating Star" class="rating-star">{{this.rating}}</h2>
+  <h3 class="spot-category">{{this.vegCategory}}</h3>
   <p class="spot-address">{{this.address}}</p>
   <p class="spot-text">{{this.description}}</p>
   <input type="hidden" class="spot-coord" value={{this.coord}}>
