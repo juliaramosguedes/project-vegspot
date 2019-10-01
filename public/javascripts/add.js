@@ -34,16 +34,15 @@ window.onload = () => {
   };
 
   document.getElementById('Endereço').onfocusout = async function () {
-    console.log(document.getElementById('Endereço').value.length)
+    document.getElementById('addressChecker').innerHTML = '';
     const addressValue = document.getElementById('Endereço').value;
     if(addressValue.length > 6) {
       const geoAddress = addressValue;
       const geoInfo = await geocode(geoAddress);
       if (geoInfo.data.results.length) {
-        const geoCoord = JSON.stringify(geoInfo.data.results[0].geometry.location);
-        console.log(geoCoord)
-        addSingleMarker(JSON.parse(geoCoord));
-        document.querySelector('#form-coord').value = geoCoord;
+        const geoCoord = geoInfo.data.results[0].geometry.location;
+        addSingleMarker(geoCoord);
+        document.querySelector('#form-coord').value = JSON.stringify([geoCoord.lat, geoCoord.lng]);
         console.log(document.getElementById('form-coord').value);
         document.getElementById('addressChecker').innerHTML = '';
       } else {

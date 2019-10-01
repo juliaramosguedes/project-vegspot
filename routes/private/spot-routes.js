@@ -12,8 +12,13 @@ const checkAchiever = checkRoles('achiever');
 router.post('/search', async (req, res) => {
   const { searchSpot } = req.body;
   try {
-    const spots = await Spot.find({ name: { "$regex": searchSpot, "$options": "i" } });
-    res.render('public/search', { spots });
+    if (!req.user || req.user.role === 'user') {
+      const spots = await Spot.find({ status: 'ativo', name: { "$regex": searchSpot, "$options": "i" } });
+      res.render('public/search', { spots });
+    } else {
+      const spots = await Spot.find({ name: { "$regex": searchSpot, "$options": "i" } });
+      res.render('public/search', { spots });
+    }
   } catch (error) {
     console.log(error);
     res.redirect('/');
@@ -25,9 +30,25 @@ router.get('/add', ensureLogin.ensureLoggedIn(), (req, res, next) => {
 });
 
 router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
-  const { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price, googlePhotos } = req.body;
-  console.log('coords', coord)
-  console.log('googleReview', googleReviews)
+  let { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, googleReviewsText, price, googlePhotos, googleRating } = req.body;
+  coord = JSON.parse(coord.toString())
+  console.log(coord)
+
+  // console.log('googleReviewsRaw', googleReviews, typeof(googleReviews))
+  const reviewArray = []
+  googleReviews.forEach((review, index) => {
+    console.log('1')
+    let reviewString = review.replace(/\*/g, '"');
+    console.log(reviewString);
+    reviewString = JSON.parse(reviewString.toString());
+    reviewString.text = googleReviewsText[index]
+    console.log('googleReviewsPartial', reviewString, typeof(reviewString))
+    reviewArray.push(reviewString);
+    
+  });
+  googleReviews = reviewArray;
+  console.log('googleReviews', googleReviews, typeof(googleReviews))
+
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
@@ -41,7 +62,7 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
       res.render("private/spot-add", { message: "O nome desse local já está cadastrado." });
       return;
     }
-    const newSpot = new Spot({ name, authorId, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price });
+    const newSpot = new Spot({ name, authorId, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, googlePhotos, googleRating, price });
     newSpot.save((err) => {
       if (err) {
         console.log(err);
@@ -60,10 +81,15 @@ router.get('/profile/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const spot = await Spot.findById(id);
-    if (req.user.role === 'achiever') {
-      res.render('private/spot-adm', spot);
-    } else {
+    const reviewArray = []
+    spot.googleReviews.forEach((review) => {
+      console.log(review, typeof(reviewString))
+    });
+
+    if (!req.user || req.user.role === 'user') {
       res.render('public/spot-profile', spot);
+    } else {
+      res.render('private/spot-adm', spot);
     }
   } catch (error) {
     console.log(error);
@@ -82,7 +108,7 @@ router.get('/edit/:id', checkAchiever, async (req, res, next) => {
 
 router.post('/edit/:id', checkAchiever, async (req, res, next) => {
   const { id } = req.params;
-  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos } = req.body;
+  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos, status } = req.body;
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
@@ -91,7 +117,7 @@ router.post('/edit/:id', checkAchiever, async (req, res, next) => {
   }
 
   try {
-    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos });
+    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos, status });
     res.redirect('/');
   } catch (error) {
     console.log(error);

@@ -113,7 +113,7 @@ function addMarkerPlaces(places) {
   for (let i = 0; i < places.length; i++) {
     const place = places[i];
     const coords = place.geometry.location;
-    console.log(place.name, place.formatted_address);
+    //console.log(place.name, place.formatted_address);
     contentString[i] = `
     <div>${place.name}</div>
     <div>${place.formatted_address}</div>
@@ -179,7 +179,7 @@ async function findPlaces(text) {
       addMarkerPlaces(places);
       document.getElementById('addList').innerHTML = '';
       places.forEach((place, index) => {
-        console.log('places', place);
+        //console.log('places', place);
 
         document.getElementById('addList').innerHTML += `
         <li class="addPlace">${place.name} ${place.formatted_address}
@@ -191,7 +191,7 @@ async function findPlaces(text) {
       const addButton = document.querySelectorAll('.fillListButton');
       addButton.forEach((button, index) => {
         button.onclick = function () {
-          console.log(index);
+          //console.log(index);
           placeDetails(places[index].place_id);
           addSingleMarker(places[index].geometry.location);
         };
@@ -212,8 +212,9 @@ function placeDetails(id) {
 
   function callback(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      console.log('place details', place);
-      console.log('place coord', JSON.stringify(place.geometry.location));
+      //console.log('place details', place);
+      let coord = JSON.parse(JSON.stringify(place.geometry.location).toString());
+      console.log('place coord', coord);
       let workTime = '';
       place.opening_hours.weekday_text.forEach((day) => {
         workTime += `${day.toString()}\n`;
@@ -230,7 +231,8 @@ function placeDetails(id) {
       document.getElementById('Endereço').value = place.formatted_address;
       blockField('Endereço');
       document.getElementById('weekday').value = workTime;
-      document.getElementById('form-coord').value = JSON.stringify(place.geometry.location);
+      document.getElementById('form-coord').value = JSON.stringify([coord.lng, coord.lat]);
+      console.log(document.getElementById('form-coord').value)
       document.getElementById('form-placeID').value = place.place_id;
       document.getElementById('form-rating').value = place.rating;
       place.photos.forEach((photo) => {
@@ -239,13 +241,21 @@ function placeDetails(id) {
         `;
       });
       place.reviews.forEach((review) => {
+        console.log(review)
         const { author_name, rating, relative_time_description, text } = review;
-        //const reviewString = JSON.stringify(author_name);
-        const reviewString = (text);
-        console.log(reviewString, typeof (reviewString));
+        const reviewString = `{
+        *name*:*${author_name}*, 
+        *rating*:*${rating}*,
+        *when*:*${relative_time_description}*
+        }`;
+        const reviewText = text;
+     
         document.getElementById('form-googleReviews').innerHTML += `
-        <input type="hidden" class="form-googleReviewClass" name="googleReviews[]" type="text" value = "${reviewString}">
-        `;
+        <input type="hidden" class="form-googleReviewClass" name="googleReviews[]" type="text" value="${reviewString}">`;
+        document.getElementById('form-googleReviews').innerHTML += `
+        <input type="hidden" class="form-googleReviewClass" name="googleReviewsText[]" type="text" value="${reviewText}">`;
+        //console.log(reviewString, typeof (reviewString));
+        console.log(document.getElementById('form-googleReviews'))
       });
     }
   }

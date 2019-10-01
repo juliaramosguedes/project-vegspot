@@ -10,8 +10,10 @@ const spotSchema = Schema(
     address: { type: String, required: true },
     description: { type: String, required: true },
     coord: {
-      type: String,
+      type: [Number], // [<longitude>, <latitude>]
+      index: '2dsphere',
       required: true,
+
     },
     // zipcode: String,
     vegCategory: {
@@ -29,6 +31,8 @@ const spotSchema = Schema(
     weekday: { type: String, required: true },
     photos: Array,
     googleReviews: Array,
+    googlePhotos: Array,
+    googleRating: Number,
     price: Number,
     status: {
       type: String,
