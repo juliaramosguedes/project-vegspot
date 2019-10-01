@@ -1,6 +1,5 @@
 window.onload = () => {
   const spots = document.querySelectorAll('.spot');
-  console.log(spots);
   const places = [];
   spots.forEach((spot) => {
     const title = spot.children[1].children[0].innerText;
@@ -22,6 +21,5 @@ window.onload = () => {
       title, vegCategory, address, coord,
     });
   });
-  console.log('array places', places);
   addMarker(places);
 };

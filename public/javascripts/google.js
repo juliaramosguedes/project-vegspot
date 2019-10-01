@@ -184,7 +184,7 @@ async function findPlaces(text) {
         document.getElementById('addList').innerHTML += `
         <li class="addPlace">${place.name} ${place.formatted_address}
         <input type="hidden" value="${index}">
-        <button class="fillListButton">Selecionar</button>
+        <button class="fillListButton btn btn-info">Selecionar</button>
         </li>
         `;
       });
