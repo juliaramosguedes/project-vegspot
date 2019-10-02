@@ -30,8 +30,22 @@ router.get('/add', ensureLogin.ensureLoggedIn(), (req, res, next) => {
 });
 
 router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
-  const { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, price, googlePhotos, googleRating } = req.body;
-  console.log('googlePhotos', googlePhotos)
+  let { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, googleReviewsText, price, googlePhotos, googleRating } = req.body;
+  coord = JSON.parse(coord.toString())
+  console.log(coord)
+
+  // console.log('googleReviewsRaw', googleReviews, typeof(googleReviews))
+  const reviewArray = []
+  googleReviews.forEach((review, index) => {
+    let reviewString = review.replace(/\*/g, '"');
+    reviewString = JSON.parse(reviewString.toString());
+    reviewString.text = googleReviewsText[index]
+    console.log('googleReviewsPartial', reviewString, typeof(reviewString))
+    reviewArray.push(reviewString);
+    
+  });
+  googleReviews = reviewArray;
+  
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
@@ -39,7 +53,7 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     return;
   }
   
-  Spot.findOne({ name })
+  Spot.findOne({ googlePlaceId })
   .then(user => {
     if (user) {
       res.render("private/spot-add", { message: "O nome desse local já está cadastrado." });
@@ -64,6 +78,10 @@ router.get('/profile/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const spot = await Spot.findById(id);
+    const reviewArray = []
+    spot.googleReviews.forEach((review) => {
+      console.log(review, typeof(reviewString))
+    });
 
     if (!req.user || req.user.role === 'user') {
       res.render('public/spot-profile', spot);

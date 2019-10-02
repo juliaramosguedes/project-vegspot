@@ -43,11 +43,15 @@
   <div id="carouselReviewsSpot" class="carousel slide d-flex justify-content-center" data-ride="carousel">
     <div class="carousel-inner col-10">
       <div class="carousel-item active">
-        <p class="carousel-review text-white">{{this.googleReviews.[0]}}</p>
+        <p class="carousel-review text-white">{{this.googleReviews.[0].name}}</p>
+        <p class="carousel-review text-white">Avaliação: {{this.googleReviews.[0].rating}}</p>
+        <p class="carousel-review text-white">{{this.googleReviews.[0].text}}</p>
       </div>
         {{#each googleReviews }}
       <div class="carousel-item">
-        <p class="carousel-review text-white">{{this}}</p>
+        <p class="carousel-review text-white">{{this.name}}</p>
+        <p class="carousel-review text-white">Avaliação: {{this.rating}}</p>
+        <p class="carousel-review text-white">{{this.text}}</p>
       </div>
         {{/each}}
     </div>
@@ -61,3 +65,5 @@
     </a>
   </div>
 </section>
+<input type="hidden" id="coord" name="coord" value={{this.coord}}>
+<script src="/javascripts/profile.js"></script>

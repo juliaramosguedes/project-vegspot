@@ -10,8 +10,10 @@ const spotSchema = Schema(
     address: { type: String, required: true },
     description: { type: String, required: true },
     coord: {
-      type: String,
+      type: [Number], // [<longitude>, <latitude>]
+      index: '2dsphere',
       required: true,
+
     },
     // zipcode: String,
     vegCategory: {
