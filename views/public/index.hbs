@@ -20,25 +20,26 @@ Encontre ou cadastre lugares veganos, vegetarianos ou vegan-friendly.</h1>
   </div>
   <div id="rating-spots">
     <h2>Mais bem avaliados</h2>
-      <div class="order-1 order-md-0 spots-cards col-10 col-md-5 d-flex flex-wrap m-3">
+    <div class="order-1 order-md-0 spots-cards col-10 col-md-5 d-flex flex-wrap m-3">
     {{#each spot.rating}}
-    <div class="spot col-12 col-md-6 my-3">
-      {{> spotPartial this}}
-    </div>
+      <div class="spot col-12 col-md-6 my-3">
+        {{> spotPartial this}}
+      </div>
     {{/each}}
-  </div>
+    </div>
   </div>
 
   <div id="new-spots">
     <h2>Novos Lugares</h2>
-  <div class="order-1 order-md-0 spots-cards col-10 col-md-5 d-flex flex-wrap m-3">
+    <div class="order-1 order-md-0 spots-cards col-10 col-md-5 d-flex flex-wrap m-3">
     {{#each spot.lastEntries}}
-    <div class="spot col-12 col-md-6 my-3">
-      {{> spotPartial this}}
-    </div>
+      <div class="spot col-12 col-md-6 my-3">
+        {{> spotPartial this}}
+      </div>
     {{/each}}
+    </div>
   </div>
-  </div>
-</div>
+
+</section>
 
   <script src="/javascripts/index.js"></script>
