@@ -1,5 +1,4 @@
 window.onload = async () => {
-  let maxDistance;
   let position;
   const url = 'http://localhost:3000';
   // const url = `http://localhost:${process.env.PORT}`
@@ -18,9 +17,8 @@ window.onload = async () => {
     return results;
   }
 
-  async function loadNearPlaces() {
+  async function loadNearPlaces(maxDistance) {
     document.getElementById('nearSpotList').innerHTML = '';
-    maxDistance = Number(document.getElementById('nearRange').value);
     const places = await getNearPlaces(maxDistance);
     console.log('placessss', places.data);
     console.log('maxdistance loading page', maxDistance, typeof (maxDistance));
@@ -74,10 +72,28 @@ window.onload = async () => {
 
   }
 
-  loadNearPlaces(maxDistance);
+  loadNearPlaces(500);
 
   document.getElementById('nearRange').onchange = async function () {
-    loadNearPlaces();
+    const maxDistanceText = (document.getElementById('nearRange').value);
+    console.log('maxdistancetext', maxDistanceText)
+    let maxDistance
+    switch (maxDistanceText) {
+      case '0.5 km':
+        maxDistance = 500;
+        break;
+      case '1 km':
+        maxDistance = 1000;
+        break;
+      case '5 km':
+        maxDistance = 5000;
+        break;
+      case '10 km':
+        maxDistance = 10000;
+        break;
+    }
+    console.log(maxDistance, typeof(maxDistance))
+    loadNearPlaces(maxDistance);
   };
 
   document.getElementById('changeLocationButton').onclick = async function () {

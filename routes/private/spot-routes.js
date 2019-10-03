@@ -32,7 +32,6 @@ router.get('/add', ensureLogin.ensureLoggedIn(), (req, res, next) => {
 router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
   let { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, googleReviewsText, price, googlePhotos, googleRating } = req.body;
   coord = JSON.parse(coord.toString())
-  console.log(coord)
 
   // console.log('googleReviewsRaw', googleReviews, typeof(googleReviews))
   const reviewArray = []
@@ -40,9 +39,7 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     let reviewString = review.replace(/\*/g, '"');
     reviewString = JSON.parse(reviewString.toString());
     reviewString.text = googleReviewsText[index]
-    console.log('googleReviewsPartial', reviewString, typeof(reviewString))
     reviewArray.push(reviewString);
-    
   });
   googleReviews = reviewArray;
   
@@ -78,10 +75,9 @@ router.get('/profile/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const spot = await Spot.findById(id);
-    const reviewArray = []
-    spot.googleReviews.forEach((review) => {
-      console.log(review, typeof(reviewString))
-    });
+    // spot.googleReviews.forEach((review) => {
+    //   console.log(review, typeof(reviewString))
+    // });
 
     if (!req.user || req.user.role === 'user') {
       res.render('public/spot-profile', spot);

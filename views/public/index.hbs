@@ -8,11 +8,11 @@ Encontre ou cadastre lugares veganos, vegetarianos ou vegan-friendly.</h1>
   <div id="near-spots">
     <input type="text" id="changeLocation">
     <select name="maxDistance" id="nearRange"> 
-      <option selected> 500 </option> 
-      <option> 1000 </option> 
-      <option> 3000 </option> 
-      <option> 5000 </option> 
-      <option> 20000 </option> 
+      <option selected> 0.5 km </option> 
+      <option> 1 km </option> 
+      <option> 3 km </option> 
+      <option> 5 km </option> 
+      <option> 13 km </option> 
     </select> 
     <button id="changeLocationButton">Procure em outra regiao</button>
     <div id="nearPlacesMessage"></div>
@@ -21,11 +21,25 @@ Encontre ou cadastre lugares veganos, vegetarianos ou vegan-friendly.</h1>
 
   </div>
   <div id="rating-spots">
-    
+    <h2>Mais bem avaliados</h2>
+      <div class="order-1 order-md-0 spots-cards col-10 col-md-5 d-flex flex-wrap m-3">
+    {{#each spot.rating}}
+    <div class="spot col-12 col-md-6 my-3">
+      {{> spotPartial this}}
+    </div>
+    {{/each}}
+  </div>
   </div>
 
   <div id="new-spots">
-
+    <h2>Novos Lugares</h2>
+  <div class="order-1 order-md-0 spots-cards col-10 col-md-5 d-flex flex-wrap m-3">
+    {{#each spot.lastEntries}}
+    <div class="spot col-12 col-md-6 my-3">
+      {{> spotPartial this}}
+    </div>
+    {{/each}}
+  </div>
   </div>
 </div>
 

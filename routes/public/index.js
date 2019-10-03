@@ -4,8 +4,11 @@ const Spot = require('../../models/Spot');
 const router = express.Router();
 
 /* GET home page */
-router.get('/', (req, res, next) => {
-  res.render('public/index');
+router.get('/', async (req, res, next) => {
+  let spot = {}
+  spot['rating'] = await Spot.find().sort({ googleRating: -1 }).limit(3)
+  spot['lastEntries'] = await Spot.find().sort({ date: -1 }).limit(3)
+  res.render('public/index', { spot });
 });
 
 router.post('/', async (req, res, next) => {
@@ -20,9 +23,7 @@ router.post('/', async (req, res, next) => {
         },
       },
     },
-  })
-  console.log(places)
-  console.log(places.length)
+  });
   res.status(200).json(places);
 });
 
