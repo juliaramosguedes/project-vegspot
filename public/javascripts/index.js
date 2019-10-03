@@ -72,16 +72,13 @@ window.onload = async () => {
 
   }
 
-  loadNearPlaces(500);
+  loadNearPlaces(1000);
 
   document.getElementById('nearRange').onchange = async function () {
     const maxDistanceText = (document.getElementById('nearRange').value);
     console.log('maxdistancetext', maxDistanceText)
     let maxDistance
     switch (maxDistanceText) {
-      case '0.5 km':
-        maxDistance = 500;
-        break;
       case '1 km':
         maxDistance = 1000;
         break;
