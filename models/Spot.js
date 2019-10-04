@@ -39,6 +39,7 @@ const spotSchema = Schema(
       enum: ['ativo', 'inativo'],
       default: 'ativo',
     },
+    date: { type: Date, default: Date.now },
   },
 );
 
