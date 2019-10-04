@@ -50,3 +50,7 @@ html, body {
   width: 40px;
   padding-bottom: 7px;
 }
+
+.width-auto {
+  width: auto !important;
+}
