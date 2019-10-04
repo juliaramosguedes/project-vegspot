@@ -88,6 +88,8 @@ window.onload = async () => {
       case '10 km':
         maxDistance = 10000;
         break;
+      default:
+        maxDistance = 1000;
     }
     console.log(maxDistance, typeof(maxDistance))
     loadNearPlaces(maxDistance);
