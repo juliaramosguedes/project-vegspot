@@ -223,7 +223,7 @@ function placeDetails(id) {
         workTime += `${day.toString()}\n`;
       });
       document.getElementById('clearSelection').innerHTML = `
-      <button id="clearSelectionButton">Limpar Seleção</button>
+      <button id="clearSelectionButton" class="btn btn-info">Limpar Seleção</button>
       `;
       document.getElementById('clearSelectionButton').onclick = function () {
         clearFields();

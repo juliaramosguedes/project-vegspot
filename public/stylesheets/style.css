@@ -46,11 +46,17 @@ html, body {
   /*pointer-events: none;*/
 }
 
-.rating-star {
+.rating-star, .verified-icon {
   width: 40px;
   padding-bottom: 7px;
 }
 
 .width-auto {
   width: auto !important;
+}
+
+.carousel-photo {
+  height: 400px;
+  width: auto !important;
+  margin: 0 auto;
 }
