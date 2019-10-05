@@ -1,7 +1,7 @@
 window.onload = async () => {
   let position;
-  const url = 'https://project-vegspot.herokuapp.com';
-  // const url = `http://localhost:${process.env.PORT}`
+  // const url = 'https://project-vegspot.herokuapp.com';
+  const url = `http://localhost:3000`
 
   markCurrentLocation();
   const inputChangeLocation = document.getElementById('changeLocation');
@@ -43,7 +43,7 @@ window.onload = async () => {
     } else {
       document.getElementById('nearPlacesMessage').innerHTML = `
       Nao foram encontrados lugares proximos a voce em ${maxDistance} metros.
-      Aumente a area de busca ou cadastre novos lugares!
+      Aumente a area de busca ou <a href="/spot/add" class="text-black">cadastre</a> novos lugares!
       `;
     }
   }
@@ -105,8 +105,10 @@ window.onload = async () => {
   document.getElementById('changeLocationButton').onclick = async function () {
     const location = document.getElementById('changeLocation').value;
     const geoInfo = await geocode(location);
+    console.log('geoinfo', geoInfo)
     const coord = geoInfo.data.results[0].geometry.location;
     const maxDistance = readMaxDistance()
+    addSingleMarker(coord, true);
     console.log('geo', coord);
     position = [coord.lng, coord.lat];
     console.log('coord click', coord);
