@@ -3,6 +3,7 @@ window.onload = async () => {
   const url = 'http://localhost:3000';
   // const url = `http://localhost:${process.env.PORT}`
 
+  markCurrentLocation();
   const inputChangeLocation = document.getElementById('changeLocation');
   const autocompleteLocation = new google.maps.places.Autocomplete(inputChangeLocation);
   autocompleteLocation.setComponentRestrictions({ country: ['br'] });
@@ -19,6 +20,7 @@ window.onload = async () => {
 
   async function loadNearPlaces(maxDistance) {
     document.getElementById('nearSpotList').innerHTML = '';
+    document.getElementById('nearPlacesMessage').innerHTML = '';
     const places = await getNearPlaces(maxDistance);
     console.log('placessss', places.data);
     console.log('maxdistance loading page', maxDistance, typeof (maxDistance));
@@ -72,12 +74,10 @@ window.onload = async () => {
 
   }
 
-  loadNearPlaces(1000);
-
-  document.getElementById('nearRange').onchange = async function () {
+  function readMaxDistance () {
     const maxDistanceText = (document.getElementById('nearRange').value);
     console.log('maxdistancetext', maxDistanceText)
-    let maxDistance
+    let maxDistance;
     switch (maxDistanceText) {
       case '1 km':
         maxDistance = 1000;
@@ -92,6 +92,13 @@ window.onload = async () => {
         maxDistance = 1000;
     }
     console.log(maxDistance, typeof(maxDistance))
+    return maxDistance;
+  }
+
+  loadNearPlaces(1000);
+
+  document.getElementById('nearRange').onchange = async function () {
+    const maxDistance = readMaxDistance();
     loadNearPlaces(maxDistance);
   };
 
@@ -99,10 +106,11 @@ window.onload = async () => {
     const location = document.getElementById('changeLocation').value;
     const geoInfo = await geocode(location);
     const coord = geoInfo.data.results[0].geometry.location;
+    const maxDistance = readMaxDistance()
     console.log('geo', coord);
     position = [coord.lng, coord.lat];
     console.log('coord click', coord);
-    loadNearPlaces(coord);
+    loadNearPlaces(maxDistance);
     document.getElementById('changeLocation').value = '';
   };
 };

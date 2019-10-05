@@ -1,4 +1,4 @@
-window.onload = () => {
+window.onload = async () => {
   let coord = document.getElementById('coord').value;
   coord = `[${coord}]`;
   coord = JSON.parse(coord.toString());

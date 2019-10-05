@@ -1,12 +1,39 @@
 let pos;
 
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 15,
-  });
-  infoWindow = new google.maps.InfoWindow();
+// function initMap() {
+//   map = new google.maps.Map(document.getElementById('map'), {
+//     center: { lat: -34.397, lng: 150.644 },
+//     zoom: 15,
+//   });
+//   infoWindow = new google.maps.InfoWindow();
 
+//   // Try HTML5 geolocation.
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition((position) => {
+//       pos = {
+//         lat: position.coords.latitude,
+//         lng: position.coords.longitude,
+//       };
+
+//       infoWindow.setPosition(pos);
+//       infoWindow.setContent('Location found.');
+//       infoWindow.open(map);
+//       map.setCenter(pos);
+//     }, () => {
+//       handleLocationError(true, infoWindow, map.getCenter());
+//     });
+//   } else {
+//     // Browser doesn't support Geolocation
+//     //handleLocationError(false, infoWindow, map.getCenter());
+//     pos = {
+//       lat: -23.5617714,
+//       lng: -46.66019,
+//     };
+//     map.setCenter(pos);
+//   }
+// }
+
+function initMap() {
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -14,23 +41,29 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
-
-      infoWindow.setPosition(pos);
-      infoWindow.setContent('Location found.');
-      infoWindow.open(map);
-      map.setCenter(pos);
-    }, () => {
-      handleLocationError(true, infoWindow, map.getCenter());
     });
   } else {
     // Browser doesn't support Geolocation
-    //handleLocationError(false, infoWindow, map.getCenter());
+    // handleLocationError(false, infoWindow, map.getCenter());
     pos = {
       lat: -23.5617714,
       lng: -46.66019,
     };
-    map.setCenter(pos);
   }
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: -34.397, lng: 150.644 },
+    zoom: 15,
+  });
+}
+
+function markCurrentLocation() {
+  const infoWindow = new google.maps.InfoWindow();
+  infoWindow.setPosition(pos);
+  infoWindow.setContent('Location found.');
+  infoWindow.open(map);
+  map.setCenter(pos);
+  map.setCenter(pos);
 }
 
 function addSingleMarker(coords) {
@@ -41,31 +74,6 @@ function addSingleMarker(coords) {
     icon,
   });
   map.setCenter(coords);
-  const contentString = `
-  <h2>X marks the spot</h2>
-
-  `;
-
-  /* const contentString = `
-  <h2>${name}</h2>
-  <h2>${address}</h2>
-  <h2>${rating}</h2>
-  `; */
-  const infowindow = new google.maps.InfoWindow({
-    content: contentString,
-  });
-
-  marker.addListener('mouseover', () => {
-    infowindow.open(map, marker);
-  });
-
-  marker.addListener('click', () => {
-    console.log(infoWindow.content);
-  });
-
-  marker.addListener('mouseout', () => {
-    infowindow.close();
-  });
 }
 
 function addMarker(places) {
@@ -113,7 +121,7 @@ function addMarkerPlaces(places) {
   for (let i = 0; i < places.length; i++) {
     const place = places[i];
     const coords = place.geometry.location;
-    //console.log(place.name, place.formatted_address);
+    // console.log(place.name, place.formatted_address);
     contentString[i] = `
     <div>${place.name}</div>
     <div>${place.formatted_address}</div>
@@ -179,7 +187,7 @@ async function findPlaces(text) {
       addMarkerPlaces(places);
       document.getElementById('addList').innerHTML = '';
       places.forEach((place, index) => {
-        //console.log('places', place);
+        // console.log('places', place);
 
         document.getElementById('addList').innerHTML += `
         <li class="addPlace">${place.name} ${place.formatted_address}
@@ -191,12 +199,11 @@ async function findPlaces(text) {
       const addButton = document.querySelectorAll('.fillListButton');
       addButton.forEach((button, index) => {
         button.onclick = function () {
-          //console.log(index);
+          // console.log(index);
           placeDetails(places[index].place_id);
-          map.setCenter(places[index].geometry.location)
-          //addSingleMarker(places[index].geometry.location);
+          map.setCenter(places[index].geometry.location);
+          // addSingleMarker(places[index].geometry.location);
           document.getElementById('map').scrollIntoView();
-
         };
       });
     }
@@ -216,7 +223,7 @@ function placeDetails(id) {
   function callback(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       console.log('place details', place);
-      let coord = JSON.parse(JSON.stringify(place.geometry.location).toString());
+      const coord = JSON.parse(JSON.stringify(place.geometry.location).toString());
       console.log('place coord', coord);
       let workTime = '';
       place.opening_hours.weekday_text.forEach((day) => {
@@ -235,35 +242,37 @@ function placeDetails(id) {
       blockField('Endereço');
       document.getElementById('weekday').value = workTime;
       document.getElementById('form-coord').value = JSON.stringify([coord.lng, coord.lat]);
-      console.log(document.getElementById('form-coord').value)
+      console.log(document.getElementById('form-coord').value);
       document.getElementById('form-placeID').value = place.place_id;
       document.getElementById('form-rating').value = place.rating;
-      console.log(typeof(place.photos), typeof(typeof(place.photos)))
-      if(typeof(place.photos) !== 'undefined') {
+      console.log(typeof (place.photos), typeof (typeof (place.photos)));
+      if (typeof (place.photos) !== 'undefined') {
         place.photos.forEach((photo) => {
           document.getElementById('form-googlePhotos').innerHTML += `
           <input type="hidden" class="form-photosClass" name="googlePhotos[]" type="text" value="${photo.getUrl()}">
           `;
         });
       }
-      console.log(typeof(place.reviews))
-      if(typeof(place.reviews) !== 'undefined') {
+      console.log(typeof (place.reviews));
+      if (typeof (place.reviews) !== 'undefined') {
         place.reviews.forEach((review) => {
-          console.log(review)
-          const { author_name, rating, relative_time_description, text } = review;
+          console.log(review);
+          const {
+            author_name, rating, relative_time_description, text,
+          } = review;
           const reviewString = `{
           *name*:*${author_name}*, 
           *rating*:*${rating}*,
           *when*:*${relative_time_description}*
           }`;
           const reviewText = text;
-       
+
           document.getElementById('form-googleReviews').innerHTML += `
           <input type="hidden" class="form-googleReviewClass" name="googleReviews[]" type="text" value="${reviewString}">`;
           document.getElementById('form-googleReviews').innerHTML += `
           <input type="hidden" class="form-googleReviewClass" name="googleReviewsText[]" type="text" value="${reviewText}">`;
-          //console.log(reviewString, typeof (reviewString));
-          console.log(document.getElementById('form-googleReviews'))
+          // console.log(reviewString, typeof (reviewString));
+          console.log(document.getElementById('form-googleReviews'));
         });
       }
     }
