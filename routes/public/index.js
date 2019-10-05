@@ -14,6 +14,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   const { position, maxDistance } = req.body;
   const places = await Spot.find({
+    status: 'ativo',
     coord: {
       $near: {
         $maxDistance: maxDistance,
