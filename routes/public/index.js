@@ -6,8 +6,8 @@ const router = express.Router();
 /* GET home page */
 router.get('/', async (req, res, next) => {
   let spot = {}
-  spot['rating'] = await Spot.find().sort({ googleRating: -1 }).limit(5)
-  spot['lastEntries'] = await Spot.find().sort({ date: -1 }).limit(5)
+  spot['rating'] = await Spot.find({ status: 'ativo' }).sort({ googleRating: -1 }).limit(4)
+  spot['lastEntries'] = await Spot.find({ status: 'ativo' }).sort({ date: -1 }).limit(4)
   res.render('public/index', { spot });
 });
 
