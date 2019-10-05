@@ -6,6 +6,5 @@ window.onload = () => {
     lat: coord[1],
     lng: coord[0],
   };
-  console.log(coord)
   addSingleMarker(coord)
 };
