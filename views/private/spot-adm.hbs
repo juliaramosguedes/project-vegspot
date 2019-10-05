@@ -1,9 +1,15 @@
 <section id="header-spot" class="blue p-3">
   <div class="d-flex flex-wrap justify-content-around">
     <div class="order-1 order-md-0 col-10 col-md-7">
-      <h1 class="text-white">{{this.name}} - <img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1569688377/project-vegspot/star.png" alt="Rating Star" class="rating-star">{{this.googleRating}}</h1>
-      <h2 class="text-white">{{this.vegCategory}}</h2>
-      <h2 class="text-white">{{this.spotCategory}}</h2>
+      <h1 class="text-white">
+      {{this.name}} 
+      {{#if verified}}
+      <img src="https://icon-library.net/images/verified-user-icon/verified-user-icon-3.jpg" alt="Verified spot" class="verified-icon">
+      {{/if}}
+    </h1>
+    <h2 class="text-white"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1569688377/project-vegspot/star.png" alt="Rating Star" class="rating-star">{{this.googleRating}}</h2>
+    <h2 class="text-white">{{this.vegCategory}}</h2>
+    <h2 class="text-white">{{this.spotCategory}}</h2>
     </div>
     <div class="order-0 order-md-1 col-10 col-md-3 text-right">
       <button class="btn btn-info"><a href="/spot/edit/{{_id}}" class="text-white">Editar</a></button>
@@ -12,10 +18,10 @@
 </section>
 <section id="body-spot" class="py-4">
   <div class="d-flex flex-wrap justify-content-around">
-    <div class="order-1 order-md-0 col-10 col-md-6 d-flex flex-wrap">
-      <p class="col-10">{{this.address}}</p>
-      <p class="col-10">{{this.phone}}</p>
-      <p class="col-10">{{this.description}}</p>
+    <div class="order-1 order-md-0 col-10 col-md-6 d-flex flex-wrap align-items-start flex-column">
+      <p class="m-3"><strong>Endereço:</strong><br>{{this.address}}</p>
+      <p class="m-3"><strong>Telefone:</strong><br>{{this.phone}}</p>
+      <p class="m-3"><strong>Descrição:</strong><br>{{this.description}}</p>
     </div>
     <div id="map" class="order-0 order-md-1 col-10 col-md-4"></div>
   </div>
