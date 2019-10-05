@@ -1,6 +1,6 @@
 window.onload = async () => {
   let position;
-  const url = 'http://localhost:3000';
+  const url = 'https://project-vegspot.herokuapp.com';
   // const url = `http://localhost:${process.env.PORT}`
 
   markCurrentLocation();

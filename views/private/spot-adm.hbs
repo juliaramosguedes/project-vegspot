@@ -1,7 +1,7 @@
 <section id="header-spot" class="blue p-3">
   <div class="d-flex flex-wrap justify-content-around">
     <div class="order-1 order-md-0 col-10 col-md-7">
-      <h1 class="text-white">{{this.name}} - <img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1569688377/project-vegspot/star.png" alt="Rating Star" class="rating-star">{{this.rating}}</h1>
+      <h1 class="text-white">{{this.name}} - <img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1569688377/project-vegspot/star.png" alt="Rating Star" class="rating-star">{{this.googleRating}}</h1>
       <h2 class="text-white">{{this.vegCategory}}</h2>
       <h2 class="text-white">{{this.spotCategory}}</h2>
     </div>
@@ -48,11 +48,15 @@
   <div id="carouselReviewsSpot" class="carousel slide d-flex justify-content-center" data-ride="carousel">
     <div class="carousel-inner col-10">
       <div class="carousel-item active">
-        <p class="carousel-review text-white">{{this.googleReviews.[0]}}</p>
+        <p class="carousel-review text-white">{{this.googleReviews.[0].name}}</p>
+        <p class="carousel-review text-white">Avaliação: {{this.googleReviews.[0].rating}}</p>
+        <p class="carousel-review text-white">{{this.googleReviews.[0].text}}</p>
       </div>
         {{#each googleReviews }}
       <div class="carousel-item">
-        <p class="carousel-review text-white">{{this}}</p>
+        <p class="carousel-review text-white">{{this.name}}</p>
+        <p class="carousel-review text-white">Avaliação: {{this.rating}}</p>
+        <p class="carousel-review text-white">{{this.text}}</p>
       </div>
         {{/each}}
     </div>
