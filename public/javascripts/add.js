@@ -1,9 +1,11 @@
 window.onload = () => {
+  markCurrentLocation();
   const inputSearchAddress = document.getElementById('addLocalSearch');
   const autocompleteSearch = new google.maps.places.Autocomplete(inputSearchAddress);
   autocompleteSearch.setComponentRestrictions({ country: ['br'] });
 
   const addAddress = document.getElementById('Endereço');
+  console.log(addAddress)
   const autocompleteAddress = new google.maps.places.Autocomplete(addAddress);
   autocompleteAddress.setComponentRestrictions({ country: ['br'] });
 
