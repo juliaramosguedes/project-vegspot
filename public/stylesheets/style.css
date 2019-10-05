@@ -60,3 +60,8 @@ html, body {
   width: auto !important;
   margin: 0 auto;
 }
+
+.spots-search {
+  overflow-y: scroll;
+  height: 350px;
+}
