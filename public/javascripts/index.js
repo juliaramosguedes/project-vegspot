@@ -1,7 +1,8 @@
 window.onload = async () => {
   let position;
-  // const url = 'https://project-vegspot.herokuapp.com';
-  const url = `http://localhost:3000`
+
+  const url = 'https://project-vegspot.herokuapp.com';
+  // const url = 'http://localhost:3000'
 
   markCurrentLocation();
   const inputChangeLocation = document.getElementById('changeLocation');
