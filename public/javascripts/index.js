@@ -3,7 +3,6 @@ window.onload = async () => {
   // const url = 'https://project-vegspot.herokuapp.com';
   const url = `http://localhost:3000`
 
-  markCurrentLocation();
   const inputChangeLocation = document.getElementById('changeLocation');
   const autocompleteLocation = new google.maps.places.Autocomplete(inputChangeLocation);
   autocompleteLocation.setComponentRestrictions({ country: ['br'] });
@@ -96,6 +95,7 @@ window.onload = async () => {
   }
 
   loadNearPlaces(1000);
+  markCurrentLocation();
 
   document.getElementById('nearRange').onchange = async function () {
     const maxDistance = readMaxDistance();
