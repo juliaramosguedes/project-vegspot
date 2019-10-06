@@ -33,7 +33,6 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
   let { name, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, googleReviewsText, price, googlePhotos, googleRating } = req.body;
   coord = JSON.parse(coord.toString())
 
-  // console.log('googleReviewsRaw', googleReviews, typeof(googleReviews))
   const reviewArray = []
   googleReviews.forEach((review, index) => {
     let reviewString = review.replace(/\*/g, '"');
@@ -56,7 +55,14 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
       res.render("private/spot-add", { message: "O nome desse local já está cadastrado." });
       return;
     }
-    const newSpot = new Spot({ name, authorId, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, googlePhotos, googleRating, price });
+
+    let verified = false;
+    
+    if (req.user.role === 'achiever') {
+      verified = true;
+    }
+
+    const newSpot = new Spot({ name, authorId, phone, address, description, coord, vegCategory, spotCategory, rating, googlePlaceId, weekday, photos, googleReviews, googlePhotos, googleRating, price, verified });
     newSpot.save((err) => {
       if (err) {
         console.log(err);
@@ -101,7 +107,7 @@ router.get('/edit/:id', checkAchiever, async (req, res, next) => {
 
 router.post('/edit/:id', checkAchiever, async (req, res, next) => {
   const { id } = req.params;
-  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos, status } = req.body;
+  const { name, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos, status, verified } = req.body;
   const authorId = req.user.id;
 
   if (name === "" || phone === "" || address === "" || description === "" || vegCategory === "" || spotCategory === "" || rating === "" || weekday === "" || price === "") {
@@ -110,7 +116,7 @@ router.post('/edit/:id', checkAchiever, async (req, res, next) => {
   }
 
   try {
-    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos, status });
+    await Spot.findByIdAndUpdate(id, { name, authorId, phone, address, description, vegCategory, spotCategory, rating, weekday, price, photos, status, verified });
     res.redirect('/');
   } catch (error) {
     console.log(error);

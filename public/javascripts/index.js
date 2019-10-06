@@ -1,7 +1,8 @@
 window.onload = async () => {
   let position;
+
   // const url = 'https://project-vegspot.herokuapp.com';
-  const url = `http://localhost:3000`
+  const url = 'http://localhost:3000'
 
   const inputChangeLocation = document.getElementById('changeLocation');
   const autocompleteLocation = new google.maps.places.Autocomplete(inputChangeLocation);

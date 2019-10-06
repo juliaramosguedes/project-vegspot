@@ -102,6 +102,8 @@ function addMarker(places) {
         'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
     });
 
+    markers.push(marker[i]);
+
     marker[i].addListener('mouseover', () => {
       infoWindow.setContent(contentString[i]);
       infoWindow.open(map, marker[i]);
@@ -142,6 +144,8 @@ function addMarkerPlaces(places) {
       icon:
         'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
     });
+
+    markers.push(marker[i]);
 
     marker[i].addListener('mouseover', () => {
       infoWindow.setContent(contentString[i]);
@@ -245,7 +249,7 @@ function placeDetails(id) {
         workTime += `${day.toString()}\n`;
       });
       document.getElementById('clearSelection').innerHTML = `
-      <button id="clearSelectionButton">Limpar Seleção</button>
+      <button id="clearSelectionButton" class="btn btn-info">Limpar Seleção</button>
       `;
       document.getElementById('clearSelectionButton').onclick = function () {
         clearFields();

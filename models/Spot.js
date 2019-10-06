@@ -13,9 +13,7 @@ const spotSchema = Schema(
       type: [Number], // [<longitude>, <latitude>]
       index: '2dsphere',
       required: true,
-
     },
-    // zipcode: String,
     vegCategory: {
       type: String,
       enum: ['Vegan', 'Vegetariano', 'Vegan-Friendly'],
@@ -39,6 +37,7 @@ const spotSchema = Schema(
       enum: ['ativo', 'inativo'],
       default: 'ativo',
     },
+    verified: Boolean,
     date: { type: Date, default: Date.now },
   },
 );
