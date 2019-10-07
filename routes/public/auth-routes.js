@@ -23,12 +23,14 @@ router.get('/signup', (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-  const { username, password, name, category, email, role } = req.body;
+  let { username, password, name, category, email, role } = req.body;
 
   if (username === "" || password === "" || name === "" || category === "" || email === "" || role === "") {
     res.render("auth/signup", { message: "Preencha todos os campos." });
     return;
   }
+
+  role = 'achiever'
 
   User.findOne({ username })
   .then(user => {
