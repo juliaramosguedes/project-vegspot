@@ -65,3 +65,9 @@ html, body {
   overflow-y: scroll;
   height: 350px;
 }
+
+.eachCompleteReview {
+  margin: auto auto !important;
+  text-align: center !important;
+  height: 300px;
+}

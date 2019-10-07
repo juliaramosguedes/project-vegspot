@@ -8,8 +8,45 @@ window.onload = () => {
   };
   addSingleMarker(coord);
 
-  // Verify if vegspot comments are from the logged user, if it is, then he can edit
+  // build carousel for vegspot comments
+  async function buildVegspotCommentCarousel() {
+    document.getElementById('vegspotCommentJavascript').innerHTML = '';
+    const userId = document.getElementById('authorId').value;
+    const spotId = document.getElementById('spotId').value;
+    const vegspotComment = await getComment({ spotId });
+    console.log(vegspotComment);
+    vegspotComment.forEach((comment) => {
+      document.getElementById('vegspotCommentJavascript').innerHTML += ` 
+        <div class="carousel-item eachCompleteReview">
+          <input type="hidden" value=${comment.authorId} class="commentAuthorId">
+          <input type="hidden" value=${comment._id} class="reviewId">
+          <p class="carousel-review text-white authorNameReview">${comment.authorName}</p>
+          <span class="carousel-review text-white">Avaliação: </span> <span class="carousel-review text-white ratingReview">${comment.rating}</span>
+          <p class="carousel-review text-white titleReview">${comment.title}</p>
+          <p class="carousel-review text-white textReview">${comment.text}</p>
+          <div class="editAllowed"></div>
+        </div>
+      `;
+    });
 
+    // <p class="carousel-review text-white">${comment.date.day}/${comment.date.month}/${comment.date.year}</p>
+    const editButton = document.querySelectorAll('.editAllowed');
+    console.log(editButton)
+    editButton.forEach((button, index) => {
+      console.log('authorid', vegspotComment[index].authorId, 'userid', userId)
+      if (vegspotComment[index].authorId === userId) {
+        button.innerHTML += `
+        <button class="editReviewButton">editar</button>
+        <button class="deleteReviewButton">deletar</button>
+        <div class="editFieldCheck"></div>
+        `;
+      }
+    })
+    document.querySelector('.eachCompleteReview').classList.add('active');
+    reviewComment();
+  }
+
+  // Verify if vegspot comments are from the logged user, if it is, then he can edit
   function reviewComment() {
     const editReviewButton = document.querySelectorAll('.editReviewButton');
     const deleteReviewButton = document.querySelectorAll('.deleteReviewButton');
@@ -17,6 +54,8 @@ window.onload = () => {
       let beingEdited = false;
       editReviewButton.forEach((editButton, index) => {
         editButton.onclick = function editReview() {
+          document.getElementById('carouselVegspotReviews').setAttribute('data-interval', 'false');
+          console.log(document.getElementById('carouselVegspotReviews'));
           if (beingEdited) {
             console.log('voce so pode editar um por vez');
           } else {
@@ -34,7 +73,6 @@ window.onload = () => {
             <textarea id="textFieldEdit">${textField[index].textContent}</textarea>
             `;
             ratingField[index].innerHTML = `
-            <label for="rating">Avaliação</label><br>
             <div class="form-check form-check-inline">
               <input class="form-check-input checkValueEdit" type="radio" name="rating" value="1">
               <label class="form-check-label" for="rating1">1</label>
@@ -60,6 +98,7 @@ window.onload = () => {
             editReviewButton[index].innerHTML = 'Enviar';
             deleteReviewButton[index].innerHTML = 'Cancelar';
             editReviewButton[index].onclick = async function sendReviewedComment() {
+              document.querySelectorAll('.editFieldCheck')[index].innerHTML = '';
               const title = document.getElementById('titleFieldEdit').value;
               const text = document.getElementById('textFieldEdit').value;
               console.log(title, text);
@@ -75,16 +114,22 @@ window.onload = () => {
               const authorId = document.getElementById('authorId').value;
               const authorName = document.getElementById('authorName').value;
               console.log('commentid', commentId, 'spotid', spotId, 'authorid', authorId, authorName, title, text, rating);
-              const editResult = await editComment({
-                commentId, spotId, authorId, authorName, title, text, rating,
-              });
-              if (editResult === true) {
-                console.log('dados editados com sucesso');
-                newCompleteReview.innerHTML = oldCompleteReview;
-                document.querySelectorAll('.ratingReview')[index].textContent = rating;
-                document.querySelectorAll('.titleReview')[index].textContent = title;
-                document.querySelectorAll('.textReview')[index].textContent = text;
-                reviewComment();
+              if (title === '' || text === '' || rating === '') {
+                document.querySelectorAll('.editFieldCheck')[index].innerHTML = `
+                <b>Complete todos os campos</b>
+                `;
+              } else {
+                const editResult = await editComment({
+                  commentId, spotId, authorId, authorName, title, text, rating,
+                });
+                if (editResult === true) {
+                  console.log('dados editados com sucesso');
+                  newCompleteReview.innerHTML = oldCompleteReview;
+                  document.querySelectorAll('.ratingReview')[index].textContent = rating;
+                  document.querySelectorAll('.titleReview')[index].textContent = title;
+                  document.querySelectorAll('.textReview')[index].textContent = text;
+                  buildVegspotCommentCarousel();
+                }
               }
             };
             deleteReviewButton[index].onclick = function cancelReviewedComment() {
@@ -96,21 +141,21 @@ window.onload = () => {
         };
       });
       deleteReviewButton.forEach((deleteButton, index) => {
-        deleteButton.onclick = async function deleteReview () {
+        deleteButton.onclick = async function deleteReview() {
           const newCompleteReview = document.querySelectorAll('.eachCompleteReview')[index];
           const commentId = document.querySelectorAll('.reviewId')[index].value;
           const deleteResult = await deleteComment({ commentId });
-          if(deleteResult===true) {
-            console.log('deletado com sucesso', commentId)
-            newCompleteReview.innerHTML = '';
+          if (deleteResult === true) {
+            console.log('deletado com sucesso', commentId);
+            buildVegspotCommentCarousel();
           }
-        }
-      })
+        };
+      });
     }
   }
 
-  reviewComment();
-
+  buildVegspotCommentCarousel();
+  
   // verify if all information is complete when submitting a comment, if user is logged (mandatory)
   document.getElementById('sendComment').onclick = async function addComment(event) {
     event.preventDefault();
@@ -146,6 +191,7 @@ window.onload = () => {
         authorId, authorName, spotId, title, text, rating,
       });
       if (saveResult === true) {
+        buildVegspotCommentCarousel();
         document.getElementById('submitResult').innerHTML = `
         <b>Comentario enviado com sucesso</b>
         `;

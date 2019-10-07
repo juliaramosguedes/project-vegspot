@@ -11,12 +11,13 @@ const checkRoles = require('../../middlewares/passport-middleware');
 const checkAchiever = checkRoles('achiever');
 
 router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+  const {
+ authorId, authorName, spotId, title, text, rating 
+} = req.body;
 
-  let { authorId, authorName, spotId, title, text, rating } = req.body;
-
-  if (authorId === '' || spotId === '' || title === '' || text === '' ||  rating === '') {
+  if (authorId === '' || spotId === '' || title === '' || text === '' || rating === '') {
     // res.render('private/spot-add', { message: 'Preencha todos os campos.' });
-    console.log('ocorreu um erro, faltou campo')
+    console.log('ocorreu um erro, faltou campo');
     return;
   }
 
@@ -30,23 +31,24 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
         // res.render('private/spot-add', { message: 'Algo deu errado.' });
       } else {
         // res.redirect('/');
-        console.log('gravado com sucesso')
-        res.status(200).json(true)
+        console.log('gravado com sucesso');
+        res.status(200).json(true);
       }
     });
   } else {
-    console.log('ocorreu um erro, usuario nao logado')
+    console.log('ocorreu um erro, usuario nao logado');
   }
-
 });
 
 router.post('/edit', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
-  const { authorId, authorName, spotId, title, text, rating, commentId } = req.body;
-  console.log(authorId, authorName, spotId, title, text, rating, commentId)
+  const {
+ authorId, authorName, spotId, title, text, rating, commentId 
+} = req.body;
+  console.log(authorId, authorName, spotId, title, text, rating, commentId);
 
   if (authorId === '' || authorName === '' || spotId === '' || title === '' || text === '' || rating === '' || commentId === '') {
     // res.render('private/spot-edit', { message: 'Preencha todos os campos.' });
-    console.log('ocorreu um erro, faltou campo')
+    console.log('ocorreu um erro, faltou campo');
     return;
   }
 
@@ -54,7 +56,7 @@ router.post('/edit', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     await Review.findByIdAndUpdate(commentId, {
       authorId, authorName, spotId, title, text, rating,
     });
-    console.log('edit sucesso')
+    console.log('edit sucesso');
     res.status(200).json(true);
   } catch (error) {
     console.log(error);
@@ -70,5 +72,41 @@ router.post('/delete', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     console.log(error);
   }
 });
+
+router.post('/get', async (req, res, next) => {
+  const { spotId } = req.body;
+  try {
+    const reviewResult = await Review.find({ spotId: `${spotId}` });
+    if ((reviewResult.length)) {
+      let averageRating = 0;
+      reviewResult.forEach((review, index) => {
+        if (typeof req.user !== 'undefined') {
+          if (review.authorId === req.user.id) {
+            reviewResult[index].edit = true;
+          } else {
+            reviewResult[index].edit = false;
+          }
+        }
+        averageRating += review.rating;
+        const date = new Date(review.created_at);
+        const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        if (day < 10) {
+          day = `0${day}`;
+        }
+        if (month < 10) {
+          month = `0${month}`;
+        }
+        reviewResult[index].date = { day, month, year };
+      });
+      reviewResult.averageRating = averageRating / reviewResult.length;
+    }
+    res.status(200).json(reviewResult);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 
 module.exports = router;

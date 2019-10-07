@@ -66,7 +66,7 @@
   </div>
 </section>
 <section id="reviews-spot" class="light-blue py-4">
-  <h1 class="text-center text-white">Avaliações</h1>
+  <h1 class="text-center text-white">Avaliações Google</h1>
   <div id="carouselReviewsSpot" class="carousel slide d-flex justify-content-center" data-ride="carousel">
     <div class="carousel-inner col-10">
       <div class="carousel-item active">
@@ -93,7 +93,28 @@
   </div>
 </section>
 
-<div id="vegspotReview">
+<section id="vegspotReviewsCarousel" class="blue py-4">
+  <h1 class="text-center text-white">Avaliações Vegspot</h1>
+  <div id="carouselVegspotReviews" class="carousel slide d-flex justify-content-center" data-ride="carousel">
+    <div class="carousel-inner col-10">
+      <div id="vegspotCommentJavascript"></div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselVegspotReviews" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselVegspotReviews" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Próxima</span>
+    </a>
+  </div>
+</section>
+
+
+
+</div>
+
+{{!-- <div id="vegspotReview">
   {{#each this.review}}
   <div class="eachCompleteReview">
     <input type="hidden" value={{authorId}} class="commentAuthorId">
@@ -110,7 +131,7 @@
     {{/if}}
   </div>
   {{/each}}
-</div>
+</div> --}}
 
   <form id="comment">
     <label for="postTitle">Titulo</label><br>

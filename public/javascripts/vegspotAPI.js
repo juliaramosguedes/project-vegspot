@@ -8,6 +8,11 @@ async function getNearPlaces(maxDistance, position) {
   return results;
 }
 
+async function getComment(commentId) {
+  const getResult = await axios.post(`${url}/comment/get`, commentId);
+  return getResult.data;
+}
+
 async function saveComment(comment) {
   const saveResult = await axios.post(`${url}/comment/add`, comment);
   return saveResult.data;
