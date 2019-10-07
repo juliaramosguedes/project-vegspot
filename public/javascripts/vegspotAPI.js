@@ -24,7 +24,32 @@ async function editComment(comment) {
 }
 
 async function deleteComment(commentId) {
-  console.log(commentId)
+  console.log(commentId);
   const deleteResult = await axios.post(`${url}/comment/delete`, commentId);
   return deleteResult.data;
+}
+
+function convertDate(isoDate) {
+  const date = new Date(isoDate);
+  const year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  if (day < 10) {
+    day = `0${day}`;
+  }
+  if (month < 10) {
+    month = `0${month}`;
+  }
+  return `${day}/${month}/${year}`;
+}
+
+function averageRating(commentArray) {
+  let average = 0;
+  if ((commentArray.length)) {
+    commentArray.forEach((review) => {
+      average += review.rating;
+    });
+    average /= commentArray.length;
+  }
+  return average;
 }

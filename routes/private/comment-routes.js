@@ -77,31 +77,6 @@ router.post('/get', async (req, res, next) => {
   const { spotId } = req.body;
   try {
     const reviewResult = await Review.find({ spotId: `${spotId}` });
-    if ((reviewResult.length)) {
-      let averageRating = 0;
-      reviewResult.forEach((review, index) => {
-        if (typeof req.user !== 'undefined') {
-          if (review.authorId === req.user.id) {
-            reviewResult[index].edit = true;
-          } else {
-            reviewResult[index].edit = false;
-          }
-        }
-        averageRating += review.rating;
-        const date = new Date(review.created_at);
-        const year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-        if (day < 10) {
-          day = `0${day}`;
-        }
-        if (month < 10) {
-          month = `0${month}`;
-        }
-        reviewResult[index].date = { day, month, year };
-      });
-      reviewResult.averageRating = averageRating / reviewResult.length;
-    }
     res.status(200).json(reviewResult);
   } catch (error) {
     console.log(error);

@@ -14,13 +14,13 @@ window.onload = () => {
     const userId = document.getElementById('authorId').value;
     const spotId = document.getElementById('spotId').value;
     const vegspotComment = await getComment({ spotId });
-    console.log(vegspotComment);
     vegspotComment.forEach((comment) => {
       document.getElementById('vegspotCommentJavascript').innerHTML += ` 
         <div class="carousel-item eachCompleteReview">
           <input type="hidden" value=${comment.authorId} class="commentAuthorId">
           <input type="hidden" value=${comment._id} class="reviewId">
           <p class="carousel-review text-white authorNameReview">${comment.authorName}</p>
+          <p class="carousel-review text-white">${convertDate(vegspotComment[0].created_at)}</p>
           <span class="carousel-review text-white">Avaliação: </span> <span class="carousel-review text-white ratingReview">${comment.rating}</span>
           <p class="carousel-review text-white titleReview">${comment.title}</p>
           <p class="carousel-review text-white textReview">${comment.text}</p>
@@ -29,7 +29,6 @@ window.onload = () => {
       `;
     });
 
-    // <p class="carousel-review text-white">${comment.date.day}/${comment.date.month}/${comment.date.year}</p>
     const editButton = document.querySelectorAll('.editAllowed');
     console.log(editButton);
     editButton.forEach((button, index) => {

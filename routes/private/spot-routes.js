@@ -87,32 +87,32 @@ router.get('/profile/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const spot = await Spot.findById(id);
-    spot.review = await Review.find({ spotId: `${id}` });
-    if ((spot.review.length)) {
-      let averageRating = 0;
-      spot.review.forEach((review, index) => {
-        if (typeof req.user !== 'undefined') {
-          if (review.authorId === req.user.id) {
-            spot.review[index].edit = true;
-          } else {
-            spot.review[index].edit = false;
-          }
-        }
-        averageRating += review.rating;
-        const date = new Date(review.created_at);
-        const year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-        if (day < 10) {
-          day = `0${day}`;
-        }
-        if (month < 10) {
-          month = `0${month}`;
-        }
-        spot.review[index].date = { day, month, year };
-      });
-      spot.review.averageRating = averageRating / spot.review.length;
-    }
+    // spot.review = await Review.find({ spotId: `${id}` });
+    // if ((spot.review.length)) {
+    //   let averageRating = 0;
+    //   spot.review.forEach((review, index) => {
+    //     if (typeof req.user !== 'undefined') {
+    //       if (review.authorId === req.user.id) {
+    //         spot.review[index].edit = true;
+    //       } else {
+    //         spot.review[index].edit = false;
+    //       }
+    //     }
+    //     averageRating += review.rating;
+    //     const date = new Date(review.created_at);
+    //     const year = date.getFullYear();
+    //     let month = date.getMonth() + 1;
+    //     let day = date.getDate();
+    //     if (day < 10) {
+    //       day = `0${day}`;
+    //     }
+    //     if (month < 10) {
+    //       month = `0${month}`;
+    //     }
+    //     spot.review[index].date = { day, month, year };
+    //   });
+    //   spot.review.averageRating = averageRating / spot.review.length;
+    // }
 
     if (typeof req.user !== 'undefined') {
       if (req.user.role === 'achiever') {
