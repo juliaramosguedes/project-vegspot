@@ -30,8 +30,6 @@ router.post('/signup', async (req, res) => {
     return;
   }
 
-  role = 'achiever'
-
   User.findOne({ username })
   .then(user => {
     if (user) {
