@@ -31,9 +31,9 @@ window.onload = () => {
 
     // <p class="carousel-review text-white">${comment.date.day}/${comment.date.month}/${comment.date.year}</p>
     const editButton = document.querySelectorAll('.editAllowed');
-    console.log(editButton)
+    console.log(editButton);
     editButton.forEach((button, index) => {
-      console.log('authorid', vegspotComment[index].authorId, 'userid', userId)
+      console.log('authorid', vegspotComment[index].authorId, 'userid', userId);
       if (vegspotComment[index].authorId === userId) {
         button.innerHTML += `
         <button class="editReviewButton">editar</button>
@@ -41,7 +41,7 @@ window.onload = () => {
         <div class="editFieldCheck"></div>
         `;
       }
-    })
+    });
     document.querySelector('.eachCompleteReview').classList.add('active');
     reviewComment();
   }
@@ -54,8 +54,7 @@ window.onload = () => {
       let beingEdited = false;
       editReviewButton.forEach((editButton, index) => {
         editButton.onclick = function editReview() {
-          document.getElementById('carouselVegspotReviews').setAttribute('data-interval', 'false');
-          console.log(document.getElementById('carouselVegspotReviews'));
+          $('#carouselVegspotReviews').carousel('pause');
           if (beingEdited) {
             console.log('voce so pode editar um por vez');
           } else {
@@ -135,6 +134,10 @@ window.onload = () => {
             deleteReviewButton[index].onclick = function cancelReviewedComment() {
               newCompleteReview.innerHTML = oldCompleteReview;
               reviewComment();
+              $('#carouselVegspotReviews').carousel({
+                interval: 2000,
+                pause: 'true',
+              });
               console.log('rodei de novo?');
             };
           }
@@ -155,7 +158,7 @@ window.onload = () => {
   }
 
   buildVegspotCommentCarousel();
-  
+
   // verify if all information is complete when submitting a comment, if user is logged (mandatory)
   document.getElementById('sendComment').onclick = async function addComment(event) {
     event.preventDefault();
