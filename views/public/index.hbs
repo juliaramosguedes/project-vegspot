@@ -1,1 +1,61 @@
-<h1>Caiu aqui</h1>
+<section id="govegan" class="light-blue p-3 p-md-5">
+  <div class="text-center text-white">
+    <h1>Ser veggie nunca foi tão fácil!<br><br>
+Encontre ou cadastre lugares veganos, vegetarianos ou vegan-friendly.</h1>
+  </div>
+</section>
+<section id="spots" class="m-3 m-md-5">
+  <div id="near-spots" class="py-3 d-flex flex-column justify-content-center align-items-center flex-wrap">
+    <h1 class="text-center mb-5">Lugares próximos</h1>
+      <label class="sr-only" for="Search from other address">Search from other address</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend col-12 col-md-3 mb-3">
+          <label class="input-group-text" for="inputGroupSelect01">Raio de busca</label>
+          <select name="maxDistance" id="nearRange" class="custom-select-lg custom-select">
+          <option selected>1 km</option> 
+          <option>5 km</option> 
+          <option>10 km</option>  
+        </select>
+        </div>
+        <input type="text" id="changeLocation" name="changeLocation" class="form-control form-control-lg" placeholder="Pesquise a partir de outro local" aria-label="Search from other address" aria-describedby="search-from-other-address">
+        <div class="input-group-append mb-3">
+          <button id="changeLocationButton" class="btn btn-info" type="submit"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482761/project-vegspot/search.png" alt="Search Icon" height="30"></button>
+        </div>
+      </div>
+    <div id="nearPlacesMessage"></div>
+    <ul id="nearSpotList"></ul>
+  </div>
+    <div id="map"></div>
+  <hr>
+  <div id="rating-spots" class="py-3">
+    <h1 class="text-center">Mais bem avaliados</h1>
+    <div class="spots-cards d-flex flex-wrap m-3">
+    {{#each spot.rating}}
+      <div class="spot col-12 col-md-4 col-lg-3 my-3">
+        {{> spotPartial this}}
+      </div>
+    {{/each}}
+    </div>
+  </div>
+<hr>
+  <div id="new-spots" class="py-3">
+    <h1 class="text-center">Novos Lugares</h1>
+    <div class="spots-cards d-flex flex-wrap m-3">
+    {{#each spot.lastEntries}}
+      <div class="spot col-12 col-md-4 col-lg-3 my-3">
+        {{> spotPartial this}}
+      </div>
+    {{/each}}
+    </div>
+  </div>
+</section>
+
+<section id="add">
+  <div class="blue p-3 p-md-5">
+    <h3 class="text-white text-center">Não encontrou o lugar procurado?<br>
+    Que tal cadastrá-lo? <a href="/spot/add" class="text-white">Clique aqui!</a>
+    </h3>
+  </div>
+</section>
+
+  <script src="/javascripts/index.js"></script>

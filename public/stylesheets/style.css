@@ -1,0 +1,67 @@
+/* colors
+https://colorhunt.co/palette/116554
+*/
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#map {
+  height: 350px;
+}
+
+.login {
+  font-size: 1.7em;
+}
+
+.dark-blue {
+  background: #163a5f;
+}
+
+.light-blue {
+  background: #21aba5;
+}
+
+.blue {
+  background: #1d566e;
+}
+
+.light-green {
+  background: #45eba5;
+}
+
+.brand {
+  font-size: 1.5em;
+  font-family: 'Gayathri', sans-serif;
+}
+
+.spot-img {
+  width: 200px;
+}
+
+.blocked {
+  background-color: grey;
+  /*pointer-events: none;*/
+}
+
+.rating-star, .verified-icon {
+  width: 40px;
+  padding-bottom: 7px;
+}
+
+.width-auto {
+  width: auto !important;
+}
+
+.carousel-photo {
+  height: 400px;
+  width: auto !important;
+  margin: 0 auto;
+}
+
+.spots-search {
+  overflow-y: scroll;
+  height: 350px;
+}

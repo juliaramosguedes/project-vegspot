@@ -1,0 +1,16 @@
+<img class="spot-img" src="{{this.photos.[0]}}" alt="Card image">
+<div class="spot-body">
+  <h2 class="spot-title">
+    <a href="/spot/profile/{{this._id}}">{{this.name}}</a>
+    {{#if verified}}
+      <img src="https://icon-library.net/images/verified-user-icon/verified-user-icon-3.jpg" alt="Verified spot" class="verified-icon">
+    {{/if}}
+     - 
+     <img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1569688377/project-vegspot/star.png" alt="Rating Star" class="rating-star">
+     {{this.googleRating}}
+  </h2>
+  <h3 class="spot-category">{{this.vegCategory}}</h3>
+  <p class="spot-address">{{this.address}}</p>
+  <p class="spot-text">{{this.description}}</p>
+  <input type="hidden" class="spot-coord" value={{this.coord}}>
+</div>

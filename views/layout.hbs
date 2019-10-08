@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>VegSpot</title>
+
+  <!-- Required meta tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/stylesheets/style.css">
+
+  <!-- Axios Javascript -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- Brand font -->
+  <link href="https://fonts.googleapis.com/css?family=Gayathri&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark dark-blue d-flex justify-content-between align-content-center flex-md-nowrap">
+    <div class="navbar-brand col-5 col-md-3 order-0">
+      <a class="brand text-white" href="/"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482714/project-vegspot/logo.png" alt="VegSpot logo" height="45"> VegSpot</a>
+    </div>
+      <div class="col-5 col-md-3 order-1 order-md-2 login text-right pb-2">
+    {{#if user}}
+        <a href="/auth/logout" class="text-white">Sair</a>
+        {{ else }}
+        <a href="/auth/login" class="text-white">Entrar</a>
+    {{/if}}
+      </div>
+
+    <form class="form-inline col-12 col-md-6 d-flex justify-content-center order-2 order-md-1" action="/spot/search" method="POST">
+      <label class="sr-only" for="Search spots">Search Spots</label>
+      <div class="input-group">
+        <input type="text" name="searchSpot" class="form-control form-control-lg" placeholder="Encontre um lugar" aria-label="Search for a spot" aria-describedby="search-spot">
+        <div class="input-group-append">
+          <button class="btn btn-outline-success light-green" type="submit"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1568482761/project-vegspot/search.png" alt="Search Icon" height="30"></button>
+        </div>
+      </div>
+    </form>
+  </nav>
+
+  {{{body}}}
+
+  <!-- Google JavaScript -->
+  <script src="/javascripts/google.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmsgN1sAoxmCU5VgToMMNPMrWooHKqNJo&libraries=places&callback=initMap" 
+async defer></script>
+
+  <!-- Bootstrap JavaScripts -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>

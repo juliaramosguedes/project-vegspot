@@ -10,5 +10,10 @@ npm-debug.log
 # MAC useless file
 .DS_Store
 
-# Design files
+# Other files
 logo
+cloudinary.js
+vegspot.odt
+package-lock.json
+places.json
+Project.code-workspace

@@ -1,0 +1,19 @@
+<h3 class="m-3 text-center">Encontramos {{spots.length}} lugares</h3>
+<br>
+<div class="d-flex flex-wrap justify-content-around">
+  <div class="order-1 order-md-0 spots-search col-10 col-md-5 d-flex flex-wrap m-3">
+    {{#each spots}}
+    <div class="spot col-12 col-md-6 my-3">
+      {{> spotPartial this}}
+    </div>
+    {{/each}}
+  </div>
+  <div id="map" class="order-0 order-md-1 col-10 col-md-5 m-3"></div>
+</div>
+<div class="blue p-3">
+  <h3 class="text-white text-center">Não encontrou o lugar procurado?<br>
+  Que tal cadastrá-lo? <a href="/spot/add" class="text-white">Clique aqui!</a>
+  </h3>
+</div>
+
+<script src="/javascripts/search.js"></script>
