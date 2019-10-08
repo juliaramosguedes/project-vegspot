@@ -53,7 +53,7 @@ function initMap() {
   }
 
   map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: -34.397, lng: 150.644 },
+    center: pos,
     zoom: 15,
   });
 }
@@ -68,7 +68,7 @@ function markCurrentLocation() {
 
 async function addSingleMarker(coords, newLocalSearch) {
   deleteMarkers();
-  if (typeof newLocalSearch !== 'undefined'){
+  if (typeof newLocalSearch !== 'undefined') {
     icon = 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png';
   } else {
     icon = 'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png';
@@ -91,7 +91,7 @@ function addMarker(places) {
     const place = places[i];
 
     contentString[i] = `
-    <div class = 'marker-title'>${place.title}</div>
+    <div class = 'marker-title'>${place.name}</div>
     <div class = 'marker-category'>${place.vegCategory}</div>
     <div class = 'marker-address'>${place.address}</div>
     `;
@@ -101,6 +101,8 @@ function addMarker(places) {
       icon:
         'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
     });
+
+    markers.push(marker[i]);
 
     marker[i].addListener('mouseover', () => {
       infoWindow.setContent(contentString[i]);
@@ -116,7 +118,11 @@ function addMarker(places) {
     });
     bounds.extend(places[i].coord);
   }
-  map.fitBounds(bounds);
+  if (places.length < 2) {
+    map.setCenter(places[0].coord);
+  } else {
+    map.fitBounds(bounds);
+  }
 }
 
 function addMarkerPlaces(places) {
@@ -139,6 +145,8 @@ function addMarkerPlaces(places) {
         'https://res.cloudinary.com/juliaramosguedes/image/upload/v1569094277/project-vegspot/vegflag.png',
     });
 
+    markers.push(marker[i]);
+
     marker[i].addListener('mouseover', () => {
       infoWindow.setContent(contentString[i]);
       infoWindow.open(map, marker[i]);
@@ -153,7 +161,11 @@ function addMarkerPlaces(places) {
     });
     bounds.extend(places[i].geometry.location);
   }
-  map.fitBounds(bounds);
+  if (places.length < 2) {
+    map.setCenter(places[0].geometry.location);
+  } else {
+    map.fitBounds(bounds);
+  }
 }
 
 function deleteMarkers() {

@@ -1,28 +1,16 @@
 window.onload = async () => {
   let position;
-
-  const url = 'https://project-vegspot.herokuapp.com';
-  // const url = 'http://localhost:3000'
-
-  markCurrentLocation();
+  if (typeof (position) === 'undefined') {
+    position = [pos.lng, pos.lat];
+  }
   const inputChangeLocation = document.getElementById('changeLocation');
   const autocompleteLocation = new google.maps.places.Autocomplete(inputChangeLocation);
   autocompleteLocation.setComponentRestrictions({ country: ['br'] });
 
-  async function getNearPlaces(maxDistance) {
-    console.log('position nearplaces', position);
-    if (typeof (position) === 'undefined') {
-      position = [pos.lng, pos.lat];
-      console.log('position if', position);
-    }
-    const results = await axios.post(`${url}/`, { position, maxDistance });
-    return results;
-  }
-
   async function loadNearPlaces(maxDistance) {
     document.getElementById('nearSpotList').innerHTML = '';
     document.getElementById('nearPlacesMessage').innerHTML = '';
-    const places = await getNearPlaces(maxDistance);
+    const places = await getNearPlaces(maxDistance, position);
     console.log('placessss', places.data);
     console.log('maxdistance loading page', maxDistance, typeof (maxDistance));
     if (places.data.length) {
@@ -97,6 +85,7 @@ window.onload = async () => {
   }
 
   loadNearPlaces(1000);
+  markCurrentLocation();
 
   document.getElementById('nearRange').onchange = async function () {
     const maxDistance = readMaxDistance();

@@ -5,11 +5,15 @@ const { Schema } = mongoose;
 const reviewSchema = Schema(
   {
     authorId: { type: String, required: true },
+    authorName: { type: String, required: true },
     spotId: { type: String, required: true },
     rating: { type: Number, required: true },
-    date: { type: String, required: true },
+    // date: { type: String, required: true },
     title: { type: String, required: true },
     text: { type: String, required: true },
+  },
+  {
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
   },
 );
 

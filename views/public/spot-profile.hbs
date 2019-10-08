@@ -1,6 +1,8 @@
+{{#if achiever}}
 <section id="header-spot" class="blue p-3">
-  <div class="d-flex justify-content-around flex-wrap">
-    <h1 class="text-white">
+  <div class="d-flex flex-wrap justify-content-around">
+    <div class="order-1 order-md-0 col-10 col-md-7">
+      <h1 class="text-white">
       {{this.name}} 
       {{#if verified}}
       <img src="https://icon-library.net/images/verified-user-icon/verified-user-icon-3.jpg" alt="Verified spot" class="verified-icon">
@@ -9,8 +11,27 @@
     <h2 class="text-white"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1569688377/project-vegspot/star.png" alt="Rating Star" class="rating-star">{{this.googleRating}}</h2>
     <h2 class="text-white">{{this.vegCategory}}</h2>
     <h2 class="text-white">{{this.spotCategory}}</h2>
+    </div>
+    <div class="order-0 order-md-1 col-10 col-md-3 text-right">
+      <button class="btn btn-info"><a href="/spot/edit/{{_id}}" class="text-white">Editar</a></button>
+    </div>
   </div>
 </section>
+  {{else}}
+    <section id="header-spot" class="blue p-3">
+      <div class="d-flex justify-content-around flex-wrap">
+        <h1 class="text-white">
+          {{this.name}} 
+          {{#if verified}}
+          <img src="https://icon-library.net/images/verified-user-icon/verified-user-icon-3.jpg" alt="Verified spot" class="verified-icon">
+          {{/if}}
+        </h1>
+        <h2 class="text-white"><img src="https://res.cloudinary.com/juliaramosguedes/image/upload/v1569688377/project-vegspot/star.png" alt="Rating Star" class="rating-star">{{this.googleRating}}</h2>
+        <h2 class="text-white">{{this.vegCategory}}</h2>
+        <h2 class="text-white">{{this.spotCategory}}</h2>
+      </div>
+    </section>
+{{/if}}
 <section id="body-spot" class="py-4">
   <div class="d-flex flex-wrap justify-content-around">
     <div class="order-1 order-md-0 col-10 col-md-6 d-flex flex-wrap align-items-start flex-column">
@@ -45,7 +66,7 @@
   </div>
 </section>
 <section id="reviews-spot" class="light-blue py-4">
-  <h1 class="text-center text-white">Avaliações</h1>
+  <h1 class="text-center text-white">Avaliações Google</h1>
   <div id="carouselReviewsSpot" class="carousel slide d-flex justify-content-center" data-ride="carousel">
     <div class="carousel-inner col-10">
       <div class="carousel-item active">
@@ -71,5 +92,80 @@
     </a>
   </div>
 </section>
+
+<section id="vegspotReviewsCarousel" class="blue py-4">
+  <h1 class="text-center text-white">Avaliações Vegspot</h1>
+  <div id="carouselVegspotReviews" class="carousel slide d-flex justify-content-center" data-ride="carousel">
+    <div class="carousel-inner col-10">
+      <div id="vegspotCommentJavascript"></div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselVegspotReviews" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselVegspotReviews" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Próxima</span>
+    </a>
+  </div>
+</section>
+
+
+
+</div>
+
+{{!-- <div id="vegspotReview">
+  {{#each this.review}}
+  <div class="eachCompleteReview">
+    <input type="hidden" value={{authorId}} class="commentAuthorId">
+    <input type="hidden" value={{_id}} class="reviewId">
+    <div class="authorNameReview">{{authorName}} </div>  
+    <div class ="dateReview">{{date.day}}/{{date.month}}/{{date.year}}</div><br>
+    <div class="ratingReview">{{rating}}</div><br>
+    <div class="titleReview">{{title}}</div><br>
+    <div class="textReview">{{text}}</div> <br><br>
+    {{#if edit}}
+      <button class="editReviewButton">editar</button>
+      <button class="deleteReviewButton">deletar</button>
+      <div class="editFieldCheck"></div>
+    {{/if}}
+  </div>
+  {{/each}}
+</div> --}}
+
+  <form id="comment">
+    <label for="postTitle">Titulo</label><br>
+    <input id="postTitle" type="text" name="postTitle" class="form-control-lg">
+    <br><br>
+    <label for="postText">Comentario</label><br>
+    <textarea name="postText" id="postText" cols="50" rows="5"></textarea><br>
+    <label for="rating">Avaliação</label><br>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input checkValue" type="radio" name="rating" value="1">
+      <label class="form-check-label" for="rating1">1</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input checkValue" type="radio" name="rating" value="2">
+      <label class="form-check-label" for="rating2">2</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input checkValue" type="radio" name="rating" value="3">
+      <label class="form-check-label" for="rating3">3</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input checkValue" type="radio" name="rating" value="4">
+      <label class="form-check-label" for="rating4">4</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input checkValue" type="radio" name="rating" value="5">
+      <label class="form-check-label" for="rating5">5</label>
+    </div><br>
+     <button id="sendComment" type="submit" class="btn btn-primary">Enviar Comentario</button><br>
+     <div id="submitResult"></div>
+     <input type="hidden" value={{user._id}} id="authorId">
+     <input type="hidden" value={{this._id}} id="spotId">
+     <input type="hidden" value={{user.name}} id="authorName">
+  </form>
 <input type="hidden" id="coord" name="coord" value={{this.coord}}>
+<script src="/javascripts/vegspotAPI.js"></script>
 <script src="/javascripts/profile.js"></script>

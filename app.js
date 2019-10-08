@@ -91,10 +91,12 @@ const index = require('./routes/public/index');
 const authRoutes = require('./routes/public/auth-routes');
 const spotRoutes = require('./routes/private/spot-routes');
 const userRoutes = require('./routes/private/user-routes');
+const commentRoutes = require('./routes/private/comment-routes');
 
 app.use('/', index);
 app.use('/auth', authRoutes);
 app.use('/spot', spotRoutes);
 app.use('/user', userRoutes);
+app.use('/comment', commentRoutes);
 
 module.exports = app;
