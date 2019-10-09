@@ -12,12 +12,11 @@ const checkAchiever = checkRoles('achiever');
 
 router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
   const {
- authorId, authorName, spotId, title, text, rating 
-} = req.body;
+    authorId, authorName, spotId, title, text, rating,
+  } = req.body;
 
   if (authorId === '' || spotId === '' || title === '' || text === '' || rating === '') {
-    // res.render('private/spot-add', { message: 'Preencha todos os campos.' });
-    console.log('ocorreu um erro, faltou campo');
+    res.render('public/spot-profile', { message: 'Preencha todos os campos.' });
     return;
   }
 
@@ -28,27 +27,22 @@ router.post('/add', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     newReview.save((err) => {
       if (err) {
         console.log(err);
-        // res.render('private/spot-add', { message: 'Algo deu errado.' });
       } else {
-        // res.redirect('/');
-        console.log('gravado com sucesso');
         res.status(200).json(true);
       }
     });
   } else {
-    console.log('ocorreu um erro, usuario nao logado');
+    res.render('public/spot-profile', { message: 'Por favor faça o login.' });
   }
 });
 
 router.post('/edit', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
   const {
- authorId, authorName, spotId, title, text, rating, commentId 
-} = req.body;
-  console.log(authorId, authorName, spotId, title, text, rating, commentId);
+    authorId, authorName, spotId, title, text, rating, commentId,
+  } = req.body;
 
   if (authorId === '' || authorName === '' || spotId === '' || title === '' || text === '' || rating === '' || commentId === '') {
-    // res.render('private/spot-edit', { message: 'Preencha todos os campos.' });
-    console.log('ocorreu um erro, faltou campo');
+    res.render('public/spot-profile', { message: 'Preencha todos os campos.' });
     return;
   }
 
@@ -56,7 +50,6 @@ router.post('/edit', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     await Review.findByIdAndUpdate(commentId, {
       authorId, authorName, spotId, title, text, rating,
     });
-    console.log('edit sucesso');
     res.status(200).json(true);
   } catch (error) {
     console.log(error);

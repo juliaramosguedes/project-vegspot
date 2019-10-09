@@ -14,20 +14,11 @@ window.onload = () => {
     try {
       event.preventDefault();
       const address = document.getElementById('addLocalSearch').value;
-      // console.log('address', address);
-      // findPlaces(address);
-
       const response = await geocode(address);
       const coord = response.data.results[0].geometry.location;
       const formattedAddress = response.data.results[0].formatted_address;
       const placeId = response.data.results[0].place_id;
       addSingleMarker(coord);
-      // await placeDetails(placeId);
-      // document.getElementById('formatted-address').innerHTML += `
-      // ${formattedAddress}
-      // `;
-      console.log('response', response, coord, formattedAddress, placeId);
-      // addMarkerPlaces(places);
       findPlaces(address);
       document.getElementById('addLocalSearch').value = '';
     } catch (error) {
@@ -45,7 +36,6 @@ window.onload = () => {
         const geoCoord = geoInfo.data.results[0].geometry.location;
         addSingleMarker(geoCoord);
         document.querySelector('#form-coord').value = JSON.stringify([geoCoord.lat, geoCoord.lng]);
-        console.log(document.getElementById('form-coord').value);
         document.getElementById('addressChecker').innerHTML = '';
       } else {
         document.getElementById('addressChecker').innerHTML = 'Endereco nao eh valido';
