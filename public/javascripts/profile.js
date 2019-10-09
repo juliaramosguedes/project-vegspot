@@ -35,8 +35,8 @@ window.onload = () => {
       console.log('authorid', vegspotComment[index].authorId, 'userid', userId);
       if (vegspotComment[index].authorId === userId) {
         button.innerHTML += `
-        <button class="editReviewButton">editar</button>
-        <button class="deleteReviewButton">deletar</button>
+        <button class="editReviewButton btn btn-info">editar</button>
+        <button class="deleteReviewButton btn btn-info">deletar</button>
         <div class="editFieldCheck"></div>
         `;
       }
