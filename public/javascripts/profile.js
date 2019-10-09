@@ -52,6 +52,10 @@ window.onload = () => {
       });
       document.querySelector('.eachCompleteReview').classList.add('active');
       reviewComment(reviewIndex);
+    } else {
+      document.getElementById('vegspotCommentJavascript').innerHTML = `
+      <p class="text-center text-white">Ainda não temos avaliações, seja o primeiro a fazer!</p>
+      `;
     }
   }
 
@@ -65,9 +69,8 @@ window.onload = () => {
         editButton.onclick = function editReview() {
           $('#carouselVegspotReviews').carousel('pause');
           if (beingEdited) {
-            console.log('voce so pode editar um por vez');
+            Window.alert('voce so pode editar um por vez');
           } else {
-            console.log('estou sendo editado', reviewIndex[index], )
             beingEdited = true;
             const newCompleteReview = document.querySelectorAll('.eachCompleteReview')[reviewIndex[index]];
             const oldCompleteReview = document.querySelectorAll('.eachCompleteReview')[reviewIndex[index]].innerHTML;
@@ -110,7 +113,6 @@ window.onload = () => {
               document.querySelectorAll('.editFieldCheck')[index].innerHTML = '';
               const title = document.getElementById('titleFieldEdit').value;
               const text = document.getElementById('textFieldEdit').value;
-              console.log(title, text);
               let rating;
               const ratingButton = document.querySelectorAll('.checkValueEdit');
               ratingButton.forEach((userEval, ratingIndex) => {
@@ -122,7 +124,6 @@ window.onload = () => {
               const spotId = document.getElementById('spotId').value;
               const authorId = document.getElementById('authorId').value;
               const authorName = document.getElementById('authorName').value;
-              console.log('commentid', commentId, 'spotid', spotId, 'authorid', authorId, authorName, title, text, rating);
               if (title === '' || text === '' || rating === '') {
                 document.querySelectorAll('.editFieldCheck')[index].innerHTML = `
                 <b>Complete todos os campos</b>
@@ -149,11 +150,9 @@ window.onload = () => {
       });
       deleteReviewButton.forEach((deleteButton, index) => {
         deleteButton.onclick = async function deleteReview() {
-          const newCompleteReview = document.querySelectorAll('.eachCompleteReview')[index];
           const commentId = document.querySelectorAll('.reviewId')[index].value;
           const deleteResult = await deleteComment({ commentId });
           if (deleteResult === true) {
-            console.log('deletado com sucesso', commentId);
             buildVegspotCommentCarousel();
             document.getElementById('submitResult').scrollIntoView();
           }

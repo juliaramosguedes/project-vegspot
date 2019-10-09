@@ -1,7 +1,7 @@
 
 
-const url = 'https://project-vegspot.herokuapp.com';
-//const url = 'http://localhost:3000';
+//const url = 'https://project-vegspot.herokuapp.com';
+const url = 'http://localhost:3000';
 
 async function getNearPlaces(maxDistance, position) {
   const results = await axios.post(`${url}/`, { position, maxDistance });
@@ -24,7 +24,6 @@ async function editComment(comment) {
 }
 
 async function deleteComment(commentId) {
-  console.log(commentId);
   const deleteResult = await axios.post(`${url}/comment/delete`, commentId);
   return deleteResult.data;
 }
