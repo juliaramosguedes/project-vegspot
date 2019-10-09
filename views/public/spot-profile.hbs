@@ -144,6 +144,9 @@
      <input type="hidden" value={{user._id}} id="authorId">
      <input type="hidden" value={{this._id}} id="spotId">
      <input type="hidden" value={{user.name}} id="authorName">
+      {{#if message}}
+      <div class="error-message">{{ message }}</div>
+    {{/if}}
   </form>
 </div>
 <input type="hidden" id="coord" name="coord" value={{this.coord}}>

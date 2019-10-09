@@ -10,43 +10,57 @@ window.onload = () => {
 
   // build carousel for vegspot comments
   async function buildVegspotCommentCarousel() {
+    let userId = undefined;
     document.getElementById('vegspotCommentJavascript').innerHTML = '';
-    const userId = document.getElementById('authorId').value;
+    if (document.getElementById('authorId') !== null) {
+      userId = document.getElementById('authorId').value;
+    }
     const spotId = document.getElementById('spotId').value;
     const vegspotComment = await getComment({ spotId });
-    vegspotComment.forEach((comment) => {
-      document.getElementById('vegspotCommentJavascript').innerHTML += ` 
-        <div class="carousel-item eachCompleteReview">
-          <input type="hidden" value=${comment.authorId} class="commentAuthorId">
-          <input type="hidden" value=${comment._id} class="reviewId">
-          <p class="carousel-review text-white authorNameReview">${comment.authorName}</p>
-          <p class="carousel-review text-white">${convertDate(vegspotComment[0].created_at)}</p>
-          <span class="carousel-review text-white">Avaliação: </span> <span class="carousel-review text-white ratingReview">${comment.rating}</span>
-          <p class="carousel-review text-white titleReview">${comment.title}</p>
-          <p class="carousel-review text-white textReview">${comment.text}</p>
-          <div class="editAllowed"></div>
-        </div>
-      `;
-    });
-
-    const editButton = document.querySelectorAll('.editAllowed');
-    console.log(editButton);
-    editButton.forEach((button, index) => {
-      console.log('authorid', vegspotComment[index].authorId, 'userid', userId);
-      if (vegspotComment[index].authorId === userId) {
-        button.innerHTML += `
-        <button class="editReviewButton btn btn-info">editar</button>
-        <button class="deleteReviewButton btn btn-info">deletar</button>
-        <div class="editFieldCheck"></div>
+    if (vegspotComment.length) {
+      vegspotComment.forEach((comment) => {
+        let edited = '';
+        if (comment.created_at !== comment.updated_at) {
+          edited = 'Editado em';
+        }
+        document.getElementById('vegspotCommentJavascript').innerHTML += ` 
+          <div class="carousel-item eachCompleteReview">
+            <input type="hidden" value=${comment.authorId} class="commentAuthorId">
+            <input type="hidden" value=${comment._id} class="reviewId">
+            <p class="carousel-review text-white authorNameReview">${comment.authorName}</p>
+            <p class="carousel-review text-white">${edited} ${convertDate(comment.updated_at)}</p>
+            <span class="carousel-review text-white">Avaliação: </span> <span class="carousel-review text-white ratingReview">${comment.rating}</span>
+            <p class="carousel-review text-white titleReview">${comment.title}</p>
+            <p class="carousel-review text-white textReview">${comment.text}</p>
+            <div class="editAllowed"></div>
+          </div>
         `;
-      }
-    });
-    document.querySelector('.eachCompleteReview').classList.add('active');
-    reviewComment();
+      });
+  
+      //check if user is the same as author so edit button appears
+      const editButton = document.querySelectorAll('.editAllowed');
+      const reviewIndex = [];
+      editButton.forEach((button, index) => {
+        if (vegspotComment[index].authorId === userId) {
+          reviewIndex.push(index);
+          button.innerHTML += `
+          <button class="editReviewButton btn btn-info">editar</button>
+          <button class="deleteReviewButton btn btn-info">deletar</button>
+          <div class="editFieldCheck"></div>
+          `;
+        }
+      });
+      document.querySelector('.eachCompleteReview').classList.add('active');
+      reviewComment(reviewIndex);
+    } else {
+      document.getElementById('vegspotCommentJavascript').innerHTML = `
+      <p class="text-center text-white">Ainda não temos avaliações, seja o primeiro a fazer!</p>
+      `;
+    }
   }
 
   // Verify if vegspot comments are from the logged user, if it is, then he can edit
-  function reviewComment() {
+  function reviewComment(reviewIndex) {
     const editReviewButton = document.querySelectorAll('.editReviewButton');
     const deleteReviewButton = document.querySelectorAll('.deleteReviewButton');
     if (editReviewButton.length) {
@@ -55,22 +69,22 @@ window.onload = () => {
         editButton.onclick = function editReview() {
           $('#carouselVegspotReviews').carousel('pause');
           if (beingEdited) {
-            console.log('voce so pode editar um por vez');
+            Window.alert('voce so pode editar um por vez');
           } else {
             beingEdited = true;
-            const newCompleteReview = document.querySelectorAll('.eachCompleteReview')[index];
-            const oldCompleteReview = document.querySelectorAll('.eachCompleteReview')[index].innerHTML;
+            const newCompleteReview = document.querySelectorAll('.eachCompleteReview')[reviewIndex[index]];
+            const oldCompleteReview = document.querySelectorAll('.eachCompleteReview')[reviewIndex[index]].innerHTML;
             const titleField = document.querySelectorAll('.titleReview');
             const textField = document.querySelectorAll('.textReview');
             const ratingField = document.querySelectorAll('.ratingReview');
-            const ratingCheckItem = Number(ratingField[index].textContent);
-            titleField[index].innerHTML = `
-            <input id="titleFieldEdit" value=${titleField[index].textContent}>
+            const ratingCheckItem = Number(ratingField[reviewIndex[index]].textContent);
+            titleField[reviewIndex[index]].innerHTML = `
+            <input id="titleFieldEdit" value=${titleField[reviewIndex[index]].textContent}>
             `;
-            textField[index].innerHTML = `
-            <textarea id="textFieldEdit">${textField[index].textContent}</textarea>
+            textField[reviewIndex[index]].innerHTML = `
+            <textarea id="textFieldEdit">${textField[reviewIndex[index]].textContent}</textarea>
             `;
-            ratingField[index].innerHTML = `
+            ratingField[reviewIndex[index]].innerHTML = `
             <div class="form-check form-check-inline">
               <input class="form-check-input checkValueEdit" type="radio" name="rating" value="1">
               <label class="form-check-label" for="rating1">1</label>
@@ -99,19 +113,17 @@ window.onload = () => {
               document.querySelectorAll('.editFieldCheck')[index].innerHTML = '';
               const title = document.getElementById('titleFieldEdit').value;
               const text = document.getElementById('textFieldEdit').value;
-              console.log(title, text);
               let rating;
               const ratingButton = document.querySelectorAll('.checkValueEdit');
-              ratingButton.forEach((userEval, index) => {
+              ratingButton.forEach((userEval, ratingIndex) => {
                 if (userEval.checked === true) {
-                  rating = index + 1;
+                  rating = ratingIndex + 1;
                 }
               });
-              const commentId = document.querySelectorAll('.reviewId')[index].value;
+              const commentId = document.querySelectorAll('.reviewId')[reviewIndex[index]].value;
               const spotId = document.getElementById('spotId').value;
               const authorId = document.getElementById('authorId').value;
               const authorName = document.getElementById('authorName').value;
-              console.log('commentid', commentId, 'spotid', spotId, 'authorid', authorId, authorName, title, text, rating);
               if (title === '' || text === '' || rating === '') {
                 document.querySelectorAll('.editFieldCheck')[index].innerHTML = `
                 <b>Complete todos os campos</b>
@@ -121,35 +133,28 @@ window.onload = () => {
                   commentId, spotId, authorId, authorName, title, text, rating,
                 });
                 if (editResult === true) {
-                  console.log('dados editados com sucesso');
-                  newCompleteReview.innerHTML = oldCompleteReview;
-                  document.querySelectorAll('.ratingReview')[index].textContent = rating;
-                  document.querySelectorAll('.titleReview')[index].textContent = title;
-                  document.querySelectorAll('.textReview')[index].textContent = text;
                   buildVegspotCommentCarousel();
                 }
               }
             };
             deleteReviewButton[index].onclick = function cancelReviewedComment() {
               newCompleteReview.innerHTML = oldCompleteReview;
-              reviewComment();
+              reviewComment(reviewIndex);
               $('#carouselVegspotReviews').carousel({
                 interval: 2000,
                 pause: 'true',
               });
-              console.log('rodei de novo?');
             };
           }
         };
       });
       deleteReviewButton.forEach((deleteButton, index) => {
         deleteButton.onclick = async function deleteReview() {
-          const newCompleteReview = document.querySelectorAll('.eachCompleteReview')[index];
           const commentId = document.querySelectorAll('.reviewId')[index].value;
           const deleteResult = await deleteComment({ commentId });
           if (deleteResult === true) {
-            console.log('deletado com sucesso', commentId);
             buildVegspotCommentCarousel();
+            document.getElementById('submitResult').scrollIntoView();
           }
         };
       });
@@ -172,6 +177,7 @@ window.onload = () => {
       document.getElementById('submitResult').innerHTML = `
       <b>Voce precisa estar logado para enviar um comentario</b>
       `;
+      document.getElementById('submitResult').scrollIntoView();
       return;
     }
     const spotId = document.getElementById('spotId').value;
@@ -197,6 +203,7 @@ window.onload = () => {
         document.getElementById('submitResult').innerHTML = `
         <b>Comentario enviado com sucesso</b>
         `;
+        document.getElementById('submitResult').scrollIntoView();
         document.getElementById('postTitle').value = '';
         document.getElementById('postText').value = '';
         document.querySelectorAll('.checkValue').forEach((ratingValue) => {

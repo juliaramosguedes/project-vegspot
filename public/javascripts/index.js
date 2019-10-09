@@ -11,8 +11,6 @@ window.onload = async () => {
     document.getElementById('nearSpotList').innerHTML = '';
     document.getElementById('nearPlacesMessage').innerHTML = '';
     const places = await getNearPlaces(maxDistance, position);
-    console.log('placessss', places.data);
-    console.log('maxdistance loading page', maxDistance, typeof (maxDistance));
     if (places.data.length) {
       places.data.forEach((place, index) => {
         const distance = getDistance(place.coord)
@@ -27,7 +25,6 @@ window.onload = async () => {
         };
         places.data[index].coord = coord;
       });
-      console.log('placessss', places.data);
       addMarker(places.data);
     } else {
       document.getElementById('nearPlacesMessage').innerHTML = `
@@ -54,7 +51,6 @@ window.onload = async () => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     const d = R * c / 1000;
-    console.log(d)
     return d.toFixed(1);
   }
 
@@ -65,7 +61,6 @@ window.onload = async () => {
 
   function readMaxDistance () {
     const maxDistanceText = (document.getElementById('nearRange').value);
-    console.log('maxdistancetext', maxDistanceText)
     let maxDistance;
     switch (maxDistanceText) {
       case '1 km':
@@ -80,7 +75,6 @@ window.onload = async () => {
       default:
         maxDistance = 1000;
     }
-    console.log(maxDistance, typeof(maxDistance))
     return maxDistance;
   }
 
@@ -95,13 +89,10 @@ window.onload = async () => {
   document.getElementById('changeLocationButton').onclick = async function () {
     const location = document.getElementById('changeLocation').value;
     const geoInfo = await geocode(location);
-    console.log('geoinfo', geoInfo)
     const coord = geoInfo.data.results[0].geometry.location;
     const maxDistance = readMaxDistance()
     addSingleMarker(coord, true);
-    console.log('geo', coord);
     position = [coord.lng, coord.lat];
-    console.log('coord click', coord);
     loadNearPlaces(maxDistance);
     document.getElementById('changeLocation').value = '';
   };

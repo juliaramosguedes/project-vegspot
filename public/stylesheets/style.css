@@ -67,6 +67,7 @@ html, body {
 }
 
 .carousel-item {
+  padding-top: 25px;
   margin: auto auto !important;
   text-align: center !important;
   height: 300px;
