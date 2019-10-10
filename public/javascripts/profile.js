@@ -24,7 +24,7 @@ window.onload = () => {
           edited = 'Editado em';
         }
         document.getElementById('vegspotCommentJavascript').innerHTML += ` 
-          <div class="carousel-item eachCompleteReview">
+          <div class="carousel-item eachCompleteReview reviewItem">
             <input type="hidden" value=${comment.authorId} class="commentAuthorId">
             <input type="hidden" value=${comment._id} class="reviewId">
             <p class="carousel-review text-white authorNameReview">${comment.authorName}</p>
