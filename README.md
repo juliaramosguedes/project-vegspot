@@ -51,3 +51,5 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 <strong>Dan Yamashita</strong>
 
 - [Linkedin](https://www.linkedin.com/in/danyamashita/)
+
+- [Github](https://github.com/danyamashita)
