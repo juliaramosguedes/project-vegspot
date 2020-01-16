@@ -1,4 +1,4 @@
-# project-vegspot
+# Vegspot
 Full stack project to complete module 2 of Ironhack bootcamp
 
 ## :rocket: Technologies
